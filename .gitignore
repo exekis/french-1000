@@ -1,0 +1,22 @@
+# local source workbooks and generated media should not enter a commit by accident
+data/raw/*
+!data/raw/.gitkeep
+public/audio/*
+!public/audio/.gitkeep
+
+# credentials used only by the build-time content pipeline
+.env
+.env.*
+!.env.example
+
+# future node and test outputs
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+
+# editor and macOS files
+.DS_Store
+.idea/
+.vscode/
