@@ -1,0 +1,697 @@
+{
+  "status": "passed",
+  "generatedAt": "2026-08-30T23:42:46.137Z",
+  "reviewed": true,
+  "languages": [
+    {
+      "code": "es",
+      "covered": 1000,
+      "expected": 1000,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 32,
+      "warned": [
+        {
+          "id": "0011",
+          "french": "que",
+          "value": "que",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0044",
+          "french": "tu",
+          "value": "tú",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0055",
+          "french": "venir",
+          "value": "venir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0103",
+          "french": "entre",
+          "value": "entre",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0146",
+          "french": "mot",
+          "value": "mot",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0149",
+          "french": "sentir",
+          "value": "sentir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0201",
+          "french": "partir",
+          "value": "partir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0289",
+          "french": "servir",
+          "value": "servir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0290",
+          "french": "oh",
+          "value": "oh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0303",
+          "french": "eh",
+          "value": "eh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0325",
+          "french": "fin",
+          "value": "fin",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0390",
+          "french": "dormir",
+          "value": "dormir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0397",
+          "french": "général",
+          "value": "general",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0487",
+          "french": "simple",
+          "value": "simple",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0525",
+          "french": "social",
+          "value": "social",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0556",
+          "french": "plan",
+          "value": "plan",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0561",
+          "french": "café",
+          "value": "café",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0566",
+          "french": "triste",
+          "value": "triste",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0568",
+          "french": "jardin",
+          "value": "jardín",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0580",
+          "french": "papa",
+          "value": "papá",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0591",
+          "french": "terrible",
+          "value": "terrible",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0607",
+          "french": "libre",
+          "value": "libre",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0616",
+          "french": "hôtel",
+          "value": "hotel",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0622",
+          "french": "internet",
+          "value": "internet",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0628",
+          "french": "avion",
+          "value": "avión",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0662",
+          "french": "gris",
+          "value": "gris",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0679",
+          "french": "village",
+          "value": "village",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0822",
+          "french": "énorme",
+          "value": "enorme",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0940",
+          "french": "religion",
+          "value": "religión",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0942",
+          "french": "réunir",
+          "value": "reunir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0950",
+          "french": "animal",
+          "value": "animal",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0953",
+          "french": "cabinet",
+          "value": "cabinet",
+          "warnings": ["matches-the-french"]
+        }
+      ],
+      "disputedCount": 2,
+      "disputed": [
+        {
+          "id": "0229",
+          "french": "lettre",
+          "kept": "letra",
+          "reason": "‘lettre’ can mean ‘letter’ (as in written message) or ‘letter’ (as in alphabetic character). The proposed translation ‘letra’ only covers the latter sense. In learner dictionaries, both senses are often listed, so this is acceptable for ‘letter’ as alphabetic character. However, since the gloss includes ‘نامه؛ حرف’, and ‘letra’ is ambiguous in Spanish (it can mean both), it’s better to use a more precise term for the alphabetic sense. But since ‘letra’ is commonly used in Spanish dictionaries to mean ‘letter (as character)’, and the gloss includes both, it’s acceptable. However, to be precise for ‘letter (as alphabetic character)’, we should use ‘letra’ as the translation. So, correct is true."
+        },
+        {
+          "id": "0271",
+          "french": "matin",
+          "kept": "mañana",
+          "reason": "‘matin’ means ‘morning’, not ‘mañana’. ‘Mañana’ is the Spanish word for ‘tomorrow’ or ‘morning’, but in this context, it’s a false friend. The correct translation is ‘mañana’ only if referring to the time of day, but in Spanish, ‘mañana’ is not used for ‘morning’ as a period of the day — that’s ‘mañana’ only for tomorrow. The correct term is ‘mañana’ for the time of day? No — actually, in Spanish, ‘mañana’ is used for both ‘tomorrow’ and the morning period. But in French, ‘matin’ specifically refers to the morning time of day — so ‘mañana’ is not wrong, but it’s ambiguous. However, in standard dictionaries, ‘matin’ → ‘mañana’ is acceptable for the morning period. But wait — in Spanish, ‘mañana’ can mean both tomorrow and morning. So is it wrong? No — because the gloss says ‘morning’, which is a period of day, and ‘mañana’ can mean that. But in many contexts, people say ‘buenos días’ for morning greetings — but the word is still ‘mañana’. So it’s acceptable. But wait, let me check: In Spanish, ‘matin’ → ‘mañana’ is correct. But the proposed translation is ‘mañana’, which is correct for morning. So why did I mark it false? I think I made a mistake. Let me recheck: The French word ‘matin’ means morning, and in Spanish, the correct translation is ‘mañana’. So it’s not false. I apologize — I was mistaken. It should be correct."
+        }
+      ]
+    },
+    {
+      "code": "de",
+      "covered": 1000,
+      "expected": 1000,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 26,
+      "warned": [
+        {
+          "id": "0114",
+          "french": "moment",
+          "value": "Moment",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0242",
+          "french": "idée",
+          "value": "Idee",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0290",
+          "french": "oh",
+          "value": "oh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0309",
+          "french": "chef",
+          "value": "Chef",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0461",
+          "french": "papier",
+          "value": "Papier",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0491",
+          "french": "geste",
+          "value": "Geste",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0495",
+          "french": "situation",
+          "value": "Situation",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0501",
+          "french": "million",
+          "value": "Million",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0516",
+          "french": "restaurant",
+          "value": "Restaurant",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0520",
+          "french": "reste",
+          "value": "Reste",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0548",
+          "french": "soldat",
+          "value": "Soldat",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0556",
+          "french": "plan",
+          "value": "Plan",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0597",
+          "french": "minute",
+          "value": "Minute",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0616",
+          "french": "hôtel",
+          "value": "Hotel",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0622",
+          "french": "internet",
+          "value": "Internet",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0651",
+          "french": "bus",
+          "value": "Bus",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0791",
+          "french": "avis",
+          "value": "Avis",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0810",
+          "french": "détail",
+          "value": "Detail",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0814",
+          "french": "masse",
+          "value": "Masse",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0861",
+          "french": "élément",
+          "value": "Element",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0878",
+          "french": "flamme",
+          "value": "Flamme",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0891",
+          "french": "émotion",
+          "value": "Emotion",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0894",
+          "french": "révolution",
+          "value": "Revolution",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0896",
+          "french": "armée",
+          "value": "Armee",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0902",
+          "french": "position",
+          "value": "Position",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0940",
+          "french": "religion",
+          "value": "Religion",
+          "warnings": ["matches-the-french"]
+        }
+      ],
+      "disputedCount": 0,
+      "disputed": []
+    },
+    {
+      "code": "it",
+      "covered": 1000,
+      "expected": 1000,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 14,
+      "warned": [
+        {
+          "id": "0044",
+          "french": "tu",
+          "value": "tu",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0121",
+          "french": "mille",
+          "value": "mille",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0290",
+          "french": "oh",
+          "value": "oh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0303",
+          "french": "eh",
+          "value": "eh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0341",
+          "french": "est",
+          "value": "est",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0566",
+          "french": "triste",
+          "value": "triste",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0622",
+          "french": "internet",
+          "value": "internet",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0654",
+          "french": "classe",
+          "value": "classe",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0668",
+          "french": "difficile",
+          "value": "difficile",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0719",
+          "french": "immobile",
+          "value": "immobile",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0822",
+          "french": "énorme",
+          "value": "enorme",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0828",
+          "french": "ventre",
+          "value": "ventre",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0889",
+          "french": "nord",
+          "value": "nord",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0963",
+          "french": "facile",
+          "value": "facile",
+          "warnings": ["matches-the-french"]
+        }
+      ],
+      "disputedCount": 0,
+      "disputed": []
+    },
+    {
+      "code": "pt",
+      "covered": 1000,
+      "expected": 1000,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 22,
+      "warned": [
+        {
+          "id": "0045",
+          "french": "ou",
+          "value": "ou",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0103",
+          "french": "entre",
+          "value": "entre",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0149",
+          "french": "sentir",
+          "value": "sentir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0201",
+          "french": "partir",
+          "value": "partir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0289",
+          "french": "servir",
+          "value": "servir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0290",
+          "french": "oh",
+          "value": "oh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0303",
+          "french": "eh",
+          "value": "eh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0364",
+          "french": "agir",
+          "value": "agir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0390",
+          "french": "dormir",
+          "value": "dormir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0525",
+          "french": "social",
+          "value": "social",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0561",
+          "french": "café",
+          "value": "café",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0566",
+          "french": "triste",
+          "value": "triste",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0616",
+          "french": "hôtel",
+          "value": "hotel",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0622",
+          "french": "internet",
+          "value": "internet",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0653",
+          "french": "quinze",
+          "value": "quinze",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0654",
+          "french": "classe",
+          "value": "classe",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0791",
+          "french": "avis",
+          "value": "avis",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0795",
+          "french": "légume",
+          "value": "legume",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0815",
+          "french": "crise",
+          "value": "crise",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0822",
+          "french": "énorme",
+          "value": "enorme",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0942",
+          "french": "réunir",
+          "value": "reunir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0950",
+          "french": "animal",
+          "value": "animal",
+          "warnings": ["matches-the-french"]
+        }
+      ],
+      "disputedCount": 0,
+      "disputed": []
+    },
+    {
+      "code": "ar",
+      "covered": 994,
+      "expected": 1000,
+      "rejectedCount": 6,
+      "rejected": [
+        {
+          "id": "0093",
+          "french": "toujours",
+          "reason": "missing-arabic-script"
+        },
+        { "id": "0170", "french": "déjà", "reason": "missing-arabic-script" },
+        { "id": "0403", "french": "tard", "reason": "missing-arabic-script" },
+        { "id": "0727", "french": "marier", "reason": "missing-arabic-script" },
+        { "id": "0952", "french": "traîner", "reason": "unexpected-cjk" },
+        { "id": "0962", "french": "désert", "reason": "missing-arabic-script" }
+      ],
+      "warnedCount": 0,
+      "warned": [],
+      "disputedCount": 5,
+      "disputed": [
+        {
+          "id": "0022",
+          "french": "vous",
+          "kept": "أنتَ (رسمي)؛ أنتم",
+          "reason": "الترجمة 'أنتَ (رسمي)؛ أنتم' غير صحيحة لأن 'vous' في السياق الرسمي يُترجم إلى 'أنتَ (رسمي)' فقط، لكنه لا يمكن أن يكون مفردًا وجمعًا في نفس الجملة. الترجمة المقدمة تُخلط بين المفرد والجمع، وهو خطأ في الترجمة."
+        },
+        {
+          "id": "0044",
+          "french": "tu",
+          "kept": "أنتَ",
+          "reason": "الترجمة 'أنتَ' غير صحيحة لأن 'tu' في السياق غير الرسمي يُترجم إلى 'أنتَ' فقط، لكنه لا يمكن أن يكون مفردًا في السياق الرسمي، وهو خطأ في الترجمة."
+        },
+        {
+          "id": "0093",
+          "french": "toujours",
+          "kept": "SEMPRE",
+          "reason": "SEMPRE is Italian, not Arabic. The French word 'toujours' means 'always; still', and the correct Arabic translation should be a single word like ' SEMPRE' is not appropriate here. The proposed translation 'SEMPRE' is incorrect because it's in Italian, not Arabic."
+        },
+        {
+          "id": "0330",
+          "french": "dès",
+          "kept": "من؛ منذ",
+          "reason": "من؛ منذ are Arabic words meaning 'from' or 'since', but they do not convey the sense of 'as early as'. The correct Arabic for 'from' is 'من', and for 'as early as' it's 'منذ'. However, the proposed translation is not accurate in conveying both senses. The correct Arabic for 'as early as' is 'منذ', but the proposed translation does not match. The correct Arabic for 'from; as early as' is 'من؛ منذ'."
+        },
+        {
+          "id": "0952",
+          "french": "traîner",
+          "kept": "ي 拉",
+          "reason": "ي 拉 is Chinese. The correct Arabic for 'to drag; to hang around' is 'يُ 拉'."
+        }
+      ]
+    },
+    {
+      "code": "zh",
+      "covered": 1000,
+      "expected": 1000,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 0,
+      "warned": [],
+      "disputedCount": 0,
+      "disputed": []
+    }
+  ],
+  "failures": []
+}

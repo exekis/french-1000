@@ -1,0 +1,68 @@
+[
+  {
+    "id": "0001",
+    "rank": 1,
+    "french": "être",
+    "english": "to be",
+    "persian": "بودن",
+    "exampleFrench": "Je veux être ici.",
+    "exampleTarget": "être",
+    "pronunciationTarget": "être",
+    "audio": {
+      "path": "/audio/0001-etre.mp3",
+      "provider": "google-cloud-tts",
+      "kind": "neural",
+      "licenseReference": "test-fixture"
+    },
+    "review": {
+      "meaning": "reviewed",
+      "example": "human-reviewed",
+      "pronunciation": "human-reviewed",
+      "flags": ["inflection-sensitive"]
+    }
+  },
+  {
+    "id": "0002",
+    "rank": 2,
+    "french": "bonjour",
+    "english": "hello",
+    "persian": "سلام",
+    "exampleFrench": "Bonjour, comment allez-vous ?",
+    "exampleTarget": "Bonjour",
+    "pronunciationTarget": "bonjour",
+    "audio": {
+      "path": "/audio/0002-bonjour.mp3",
+      "provider": "forvo",
+      "kind": "human",
+      "licenseReference": "test-fixture"
+    },
+    "review": {
+      "meaning": "reviewed",
+      "example": "human-reviewed",
+      "pronunciation": "human-reviewed",
+      "flags": []
+    }
+  },
+  {
+    "id": "0003",
+    "rank": 3,
+    "french": "maison",
+    "english": "house; home",
+    "persian": "خانه",
+    "exampleFrench": "Ma maison est près du parc.",
+    "exampleTarget": "maison",
+    "pronunciationTarget": "maison",
+    "audio": {
+      "path": "/audio/0003-maison.mp3",
+      "provider": "google-cloud-tts",
+      "kind": "neural",
+      "licenseReference": "test-fixture"
+    },
+    "review": {
+      "meaning": "reviewed",
+      "example": "human-reviewed",
+      "pronunciation": "human-reviewed",
+      "flags": ["gender-sensitive"]
+    }
+  }
+]

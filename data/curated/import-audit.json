@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "generatedAt": "2026-08-30T03:17:49.956Z",
+  "input": {
+    "filename": "french_top_1000_english_persian.xlsx",
+    "sha256": "bc38b56bcf69a680433f28af7f636290b13ba2c23efa56ae9da3736bdbefb28e"
+  },
+  "sheetNames": ["Top 1000", "Sources & Method"],
+  "vocabularySheet": "Top 1000",
+  "headerRow": 1,
+  "headers": {
+    "french": 1,
+    "english": 2,
+    "persian": 3
+  },
+  "rankSource": "source-order",
+  "rowCount": 1000,
+  "uniqueFrenchCount": 1000,
+  "blankRequiredCellCount": 0,
+  "normalizationChangeCount": 7,
+  "sourcesAndMethod": [
+    ["Item", "Source URL", "How it was used"],
+    [
+      "Frequency backbone",
+      "https://github.com/nmondon/mots-frequents",
+      "Étienne Brunet / Eduscol-derived French frequency list. Parsed programmatically, normalized, deduplicated by surface form, and ordered by descending frequency."
+    ],
+    [
+      "Modern beginner cross-check",
+      "https://www.lenguia.com/tools/most-common-words/french",
+      "Used to cross-check the classic frequency backbone against a modern learner-oriented spoken-frequency list and identify a small set of higher-utility beginner words."
+    ],
+    [
+      "Multilingual lexical spot-check",
+      "https://github.com/barumau/panlexia",
+      "Used only as a multilingual sense spot-check where concept-linked French, English, and Persian entries were available. Ambiguous automatic matches were not accepted blindly."
+    ],
+    [
+      "Method note",
+      "",
+      "The main sheet is frequency-first and beginner-curated. It contains exactly 1,000 unique French entries. Row order is the rank. English and Persian cells give concise primary learner meanings, not exhaustive dictionary definitions."
+    ],
+    [
+      "Curation note",
+      "",
+      "A small number of dated, literary, inflected, or low-utility entries in the lower-frequency portion were replaced with practical beginner vocabulary such as greetings, close family, travel, food, study, and modern technology terms."
+    ]
+  ],
+  "errors": []
+}

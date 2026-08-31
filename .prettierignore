@@ -1,0 +1,7 @@
+dist/
+node_modules/
+playwright-report/
+test-results/
+IMPLEMENTATION_PLAN.md
+data/curated/*.jsonl
+public/audio/

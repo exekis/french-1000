@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-08-31T08:40:58.365Z",
+  "totalRecordings": 1000,
+  "providers": [
+    { "provider": "wikimedia-commons", "kind": "human", "recordings": 998 },
+    { "provider": "piper-neural", "kind": "neural", "recordings": 2 }
+  ],
+  "speakers": [
+    {
+      "speaker": "Sartus85",
+      "recordings": 912,
+      "license": "CC BY-SA 4.0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:Sartus85"
+    },
+    {
+      "speaker": "Poslovitch",
+      "recordings": 40,
+      "license": "CC0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:Poslovitch"
+    },
+    {
+      "speaker": "LoquaxFR",
+      "recordings": 21,
+      "license": "CC BY-SA 4.0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:LoquaxFR"
+    },
+    {
+      "speaker": "Jérémy-Günther-Heinz Jähnick",
+      "recordings": 8,
+      "license": "CC BY-SA 4.0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:J%C3%A9r%C3%A9my-G%C3%BCnther-Heinz_J%C3%A4hnick"
+    },
+    {
+      "speaker": "WikiLucas00",
+      "recordings": 6,
+      "license": "CC BY-SA 4.0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:WikiLucas00"
+    },
+    {
+      "speaker": "Eihel",
+      "recordings": 2,
+      "license": "CC BY-SA 3.0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:Eihel"
+    },
+    {
+      "speaker": "Lepticed7",
+      "recordings": 2,
+      "license": "CC0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:Lepticed7"
+    },
+    {
+      "speaker": "Lyokoï",
+      "recordings": 2,
+      "license": "CC BY-SA 4.0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:Lyoko%C3%AF"
+    },
+    {
+      "speaker": "Mecanautes",
+      "recordings": 2,
+      "license": "CC0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:Mecanautes"
+    },
+    {
+      "speaker": "Vion Nicolas",
+      "recordings": 2,
+      "license": "CC BY 2.0 fr",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:Vion_Nicolas"
+    },
+    {
+      "speaker": "Pamputt",
+      "recordings": 1,
+      "license": "CC0",
+      "profileUrl": "https://commons.wikimedia.org/wiki/User:Pamputt"
+    }
+  ],
+  "licenses": [
+    {
+      "name": "CC BY-SA 4.0",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "recordings": 950
+    },
+    {
+      "name": "CC0",
+      "url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "recordings": 44
+    },
+    {
+      "name": "CC BY 2.0 fr",
+      "url": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+      "recordings": 2
+    },
+    {
+      "name": "CC BY 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "recordings": 2
+    },
+    {
+      "name": "CC BY-SA 3.0",
+      "url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "recordings": 2
+    }
+  ],
+  "synthesizedVoices": [
+    {
+      "voiceName": "fr_FR-siwis-medium",
+      "recordings": 1002,
+      "licenseReference": "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)"
+    }
+  ]
+}

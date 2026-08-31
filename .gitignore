@@ -1,8 +1,9 @@
 # local source workbooks and generated media should not enter a commit by accident
 data/raw/*
 !data/raw/.gitkeep
-public/audio/*
-!public/audio/.gitkeep
+data/local/
+
+# licensed release-ready audio is tracked after validation
 
 # credentials used only by the build-time content pipeline
 .env
@@ -15,6 +16,8 @@ dist/
 coverage/
 playwright-report/
 test-results/
+.vite/
+*.tsbuildinfo
 
 # editor and macOS files
 .DS_Store

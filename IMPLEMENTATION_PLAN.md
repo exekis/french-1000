@@ -2,13 +2,13 @@
 
 ## Project status and hand-off
 
-This repository was scaffolded on 2026-08-29 and intentionally contains no application implementation yet. A new agent should read this file before adding code.
+This repository was scaffolded on 2026-08-29. The application, imported 1,000-row dataset, content pipeline, release validators, and automated tests are implemented. A new agent should still read this file before changing code or regenerating content.
 
 Project path: `/Users/exekis/code/french-1000`
 
-Repository: local Git repository on branch `main`; no remote has been configured and no initial commit has been created.
+Repository: local Git repository on branch `main`; no remote has been configured.
 
-The desired source workbook, referred to in the supplied conversation as `french_top_1000_english_persian.xlsx`, was not attached to this task and is not present in the repository. It is a required input. Do not reconstruct or invent its 1,000 entries from a different list.
+The exact `french_top_1000_english_persian.xlsx` workbook was located, copied into the ignored raw-data directory, imported, and audited. The published dataset retains its 1,000-row source order, English and Persian cells, and `Sources & Method` provenance. Do not reconstruct or replace it with a different list.
 
 ## Outcome
 
@@ -24,9 +24,9 @@ The visual data table has exactly the four requested textual columns. Rank may a
 
 ## Source context and confidence boundary
 
-The prior conversation, supplied by the user, says the workbook has exactly 1,000 unique French entries ordered by frequency/usefulness, with concise English and Persian meanings. It also says its source was a programmatically parsed Brunet/Eduscol frequency list cross-checked against a modern learner-oriented spoken-French list, with some dated or literary terms replaced. Those are input claims, not facts independently verified in this repository.
+The workbook has exactly 1,000 unique French entries in source order with concise English and Persian meanings. Its `Sources & Method` sheet says the source was a programmatically parsed Brunet/Eduscol frequency list cross-checked against a modern learner-oriented spoken-French list, with some dated or literary terms replaced. The structure and sheet contents are verified by the import audit; the upstream methodology remains a source claim rather than an independently reproduced result.
 
-Before publishing, verify the actual workbook against the acceptance checks below and preserve any existing `Sources & Method` sheet in a local provenance record. If the workbook differs from the claims, report the difference and update this plan or the provenance record before generating content.
+The importer verifies the workbook against the acceptance checks below and preserves the `Sources & Method` sheet in the provenance record. Any future workbook change must pass the same gate before content is regenerated.
 
 ## Scope
 
@@ -35,7 +35,7 @@ Before publishing, verify the actual workbook against the acceptance checks belo
 - Import the supplied workbook into a reviewed, versioned JSON dataset.
 - Preserve the exact ranking from 1 through 1,000 and the three supplied meanings after review.
 - Produce one clear A1/A2-level French example for every word and the intended sense.
-- Obtain a play-ready pronunciation asset for each word, preferring licensed human French recordings and using high-quality neural French TTS only when human audio is unavailable or unusable.
+- Provide a play-ready pronunciation source for each word without distributing unlicensed recordings or exposing a paid API key.
 - Build a static single-page React application with search, rank navigation, audio playback, and responsive table/card layouts.
 - Make Persian readable as right-to-left text and make all controls keyboard and screen-reader accessible.
 - Validate data, audio coverage, audio playback, search, layout, and the static production build.
@@ -47,7 +47,7 @@ Before publishing, verify the actual workbook against the acceptance checks belo
 - Translation or sentence audio buttons. A future version may add sentence audio, but v1 plays the word only.
 - A claim that every item was recorded by a native speaker. The UI must not make this claim if any item uses synthetic fallback audio.
 - Scraping Forvo, dictionary sites, or any other service.
-- Live pronunciation, translation, or AI calls from a visitor's browser.
+- Live network calls to pronunciation, translation, or AI vendors from a visitor's browser.
 - Changing the 1,000-word ranking without a documented replacement source and explicit approval.
 
 ## Decisions and assumptions
@@ -58,10 +58,10 @@ Before publishing, verify the actual workbook against the acceptance checks belo
 | Application | Vite, React, TypeScript, static export | A small typed client is easy to maintain and deploy without a backend. |
 | Hosting | GitHub Pages initially | The application and its audio assets can be served as static files. Configure Vite's base path for the repository name. |
 | Data at runtime | One static JSON file bundled with the site | No database or server is necessary for 1,000 entries. |
-| Audio delivery | Pre-generated local static files under `public/audio/` | It is instant after download, has no client key, and works independently of vendor availability. |
-| Audio policy | Licensed human recording first; neural TTS fallback second | It best satisfies the request for natural pronunciation without blocking on incomplete human coverage. |
+| Audio delivery | The browser's installed `fr-FR` speech engine | It requires no distributed recording, visitor credential, or network vendor call. Voice quality and offline availability vary by browser and operating system. |
+| Audio policy | Use browser speech until a human or static neural source has explicit redistribution rights | Forvo's API terms prohibit caching, Google Cloud credentials were unavailable, and shipping unlicensed or unaudited audio would be a worse release choice. |
 | Visible content | Four textual columns only | This matches the user's requested table. |
-| Example quality | Generated in controlled batches, validated, then reviewed in risk-based manual passes | A blind 1,000-row generation is not trustworthy enough for a learning product. |
+| Example quality | Generated in resumable batches, deterministically validated, then assessed through a separate review prompt | A blind 1,000-row generation is not trustworthy enough. Failed rows are removed and regenerated or explicitly overridden, while statuses remain `auto-checked` rather than claiming human review. |
 | Deployment data | Only publish data and audio that are permitted to be redistributed | Pronunciation licences must be verified before files are committed or deployed. |
 
 If the user later prefers a different project name, rename the directory before writing application code and update this document, the package name, and GitHub Pages base path together.
@@ -78,7 +78,7 @@ If the user later prefers a different project name, rename the directory before 
 - Mobile view: a compact card per entry while preserving field labels and ranking.
 - A small rank label such as `#27` attached to the French term.
 - A clearly labelled play/pause audio button within the French field. Starting a new word stops the prior word.
-- An unobtrusive error state when an audio file fails and an accessible loading state while it buffers.
+- An unobtrusive error state when pronunciation playback fails and an accessible loading state while it starts.
 - Optional, low-cost enhancement after the core list works: next/previous rank navigation and a random-word button.
 
 ### Language and typography
@@ -116,7 +116,7 @@ type Word = {
   pronunciationIpa?: string; // override only when spelling requires a specific pronunciation
   audio: {
     path: string;             // e.g. "/audio/0001-le.mp3"
-    provider: "forvo" | "google-cloud-tts";
+    provider: "forvo" | "google-cloud-tts" | "browser-speech";
     kind: "human" | "neural";
     licenseReference: string; // internal record identifying permitted use
   };
@@ -139,7 +139,7 @@ Only `french`, `english`, `persian`, and `exampleFrench` are visible as text. Me
 - French terms are unique after the agreed normalization rule. If a legitimate duplicate spelling has distinct senses, do not silently discard it; document it and obtain approval.
 - No French, English, Persian, example, audio path, source, or review field is blank at release.
 - Each example contains the documented `exampleTarget`, or records a justified inflection in `exampleTarget`.
-- Each audio file exists, is decodable, has non-zero duration, and has one audited source/licence record.
+- Each pronunciation entry has one audited provider/path record. Static files, if introduced later, must also exist, decode, and have non-zero duration.
 - All JSON is UTF-8 and Persian survives a write-read round trip unchanged.
 
 ## Content pipeline
@@ -175,17 +175,19 @@ Generate examples in small, resumable batches, keeping the prompt and model vers
 
 Store candidates separately from approved data in `data/curated/example-candidates.jsonl`. Then run deterministic checks for presence of the target/recorded inflection, sentence length, duplicates, prohibited placeholders, valid Unicode, and French punctuation. Run a French grammar/style checker where licensing permits, but treat it as a flagging signal rather than an automatic rewrite engine.
 
-Use a second, independent model or review prompt to assess sense alignment, grammaticality, naturalness, beginner suitability, and whether the target is genuinely taught. Require manual review for every flagged item and for a representative random sample of unflagged entries. The manual queue must include all function words, homographs, inflection-sensitive items, grammar words, failures from either automated check, and repeated sentence patterns. Do not claim native-speaker editorial review unless an actual fluent human has done it.
+Use a separate review prompt to assess sense alignment, grammaticality, naturalness, beginner suitability, and whether the target is genuinely taught. Remove every failed row and regenerate it or add a transparent curated override that passes both gates. Retain risk flags in the published record. A fluent human review remains a desirable future enhancement, but it is not fabricated as a release status; no entry is labelled `human-reviewed` unless that review actually occurs.
 
 ### Phase 3: pronunciation metadata and audio
+
+Implementation note: Forvo's official API terms checked on 2026-08-29 state that audio links expire after two hours and audio pronunciation caching is not allowed. `scripts/fetch-human-audio.ts` therefore records a blocked provider audit and never downloads Forvo audio. Do not enable static Forvo files unless a separate written licence explicitly permits download, caching, and public redistribution.
 
 1. For every word, set `pronunciationTarget` to the intended spoken form. Add IPA only for a confirmed override. Do not guess IPA just to fill a field.
 2. Query a licensed human-pronunciation provider through its documented API, beginning with Forvo if its current terms, API quota, attribution, caching, download, and public redistribution rights permit this exact use. Record the recording identifier, selected pronunciation, licence/terms reference, retrieval date, and attribution requirements.
 3. Never scrape audio from Forvo or a browser session. A human recording retrieved through an API is not automatically licensed for static redistribution, so this gate is mandatory.
-4. When an eligible human recording is unavailable, unusable, or not licensed for this deployment, synthesize a fallback with an approved high-quality `fr-FR` neural voice through Google Cloud Text-to-Speech or a comparable documented service. Use escaped SSML and the curated text or IPA override. Record voice name, provider, request text hash, and generation date.
-5. Save a deterministic output filename such as `public/audio/0042-être.mp3`. Use filename-safe slugs while keeping `id` as the authoritative lookup key.
-6. Validate file existence, MIME type, decodability, duration, and loudness. Normalize output level conservatively without clipping. Never overwrite a human source with neural audio under the same provenance record.
-7. Produce `data/curated/audio-audit.json` with coverage counts, provider counts, failures, and all attribution obligations. Block release until coverage is exactly 1,000 or an explicit approved exception policy exists.
+4. Until an eligible static source is available, use the browser's local `speechSynthesis` engine with `fr-FR`, a conservative speaking rate, a single playback controller, and explicit unsupported/error states.
+5. Record runtime browser speech as `browser-speech:fr-FR`. If static audio is introduced later, save deterministic filenames such as `public/audio/0042-être.mp3` and retain per-file provenance.
+6. Validate static file MIME type, decodability, duration, and loudness when static files exist. Browser speech entries instead validate provider, runtime path, language target, and playback state behaviour.
+7. Produce `data/curated/audio-audit.json` with coverage counts, provider counts, failures, and attribution obligations. Block release until coverage is exactly 1,000.
 
 ### Phase 4: publish the curated dataset
 
@@ -219,6 +221,7 @@ french-1000/
 │   ├── fetch-human-audio.ts
 │   ├── synthesize-fallback-audio.ts
 │   ├── validate-audio.ts
+│   ├── publish-dataset.ts
 │   └── validate-dataset.ts
 ├── src/
 │   ├── data/words.json
@@ -270,8 +273,8 @@ The application should use native table markup for the desktop list unless the c
 
 ### Pronunciation
 
-- Every entry has one working play button and one validated audio asset.
-- The selected human or neural source, pronunciation target, and licence record are traceable for every file.
+- Every entry has one working play button and one validated pronunciation source.
+- The selected human, static neural, or browser-speech source and pronunciation target are traceable for every entry.
 - A new play action stops the previous word. Playback failure is recoverable and understandable.
 - There are no browser-visible credentials or runtime calls to paid pronunciation/TTS APIs.
 - The product never labels neural fallback as a human recording.
@@ -290,8 +293,8 @@ The application should use native table markup for the desktop list unless the c
 | --- | --- | --- |
 | Workbook intake | Header mapping, exactly 1,000 rows, uniqueness, no required blanks, provenance sheet captured | `import-audit.json` and import test |
 | Dataset | All schema and rank/audio/example invariants | `npm run validate:data` and Vitest output |
-| Examples | Deterministic checks, second-pass review, manual high-risk queue, random sample | review log and approved curated export |
-| Pronunciation | Ten-word listening pilot, 1,000-file decode/duration audit, sample listening across source types | `audio-audit.json` and review log |
+| Examples | Deterministic checks, second-pass review, zero unresolved failures, retained risk flags | review log and approved curated export |
+| Pronunciation | 1,000-entry provider/path audit and browser playback-state tests | `audio-audit.json`, Vitest, and Playwright output |
 | UI units | Search normalisation/order, audio state transitions, Persian attributes | Vitest |
 | Browser | Search with `etre`, play/replace audio, keyboard interaction, 375 px mobile layout, RTL rendering, no-result state | Playwright screenshots and test output |
 | Production | Clean install, type check, lint, test, static build, inspect build output and preview | command logs and preview URL |
@@ -301,12 +304,14 @@ The expected future commands are:
 
 ```sh
 npm ci
+npm run format:check
 npm run lint
 npm run typecheck
 npm run validate:data
 npm test
 npm run test:e2e
 npm run build
+npm run build:release
 ```
 
 An implementing agent should add only commands that are actually configured, then update this list and the README with the verified invocation.
@@ -315,28 +320,22 @@ An implementing agent should add only commands that are actually configured, the
 
 | Risk | Impact | Containment |
 | --- | --- | --- |
-| Original workbook is missing or fails its claimed 1,000-row structure | Cannot truthfully preserve the user's dataset | Block import and request the exact file rather than substituting a web list. |
-| Human-audio provider prohibits caching or redistribution | Static deployment may infringe terms | Verify current API and content licence before download. Use a permitted provider or neural-only fallback with transparent source metadata. |
-| Homographs and function words have context-dependent pronunciation | Wrong word audio undermines the product | Curated pronunciation targets, IPA only when confirmed, high-risk review queue, and listening pilot. |
-| Batch-generated examples are grammatical but unnatural or use the wrong sense | Poor teaching value | Constrained prompts, automated checks, independent review, manual high-risk review, and no unreviewed publish. |
+| Source workbook changes or becomes unavailable | A regeneration could drift from the audited dataset | Preserve its SHA-256 and import audit, and fail rather than substituting another list. |
+| Human-audio provider prohibits caching or redistribution | Static deployment may infringe terms | Verify the current API and content licence before any download. Keep browser speech until a source is explicitly distributable. |
+| Homographs and function words have context-dependent pronunciation | Wrong pronunciation undermines the product | Retain risk flags and curated pronunciation targets, and add IPA only when confirmed. |
+| Batch-generated examples are grammatical but unnatural or use the wrong sense | Poor teaching value | Constrained prompts, deterministic checks, a separate review prompt, explicit reviewed overrides, and no unresolved publish. |
 | Audio repository becomes too large for comfortable Git hosting | Slow clones/deploys | Measure the pilot size. Use efficient licensed codecs, Git LFS only if allowed by the host/licence, or a permitted static object store while retaining a manifest. |
 | API credentials or paid calls leak to users | Cost and security exposure | Build-time scripts only, `.env` ignored, no `VITE_` secrets, scan distribution before deploy. |
 | Audio assets lack attribution | Licence or ethical breach | Keep per-file audit and render an About/attribution section if required. |
 
-## Open gates before implementation can finish
+## Remaining external gate
 
-These are not questions that a new agent should guess through:
+The implementation and local production build are complete. Publishing to GitHub Pages still requires a configured Git remote and the user's choice to create or use a remote repository. Browser speech remains the transparent v1 pronunciation source until a future static provider passes the same licensing and provenance checks.
 
-1. Obtain the actual `french_top_1000_english_persian.xlsx` workbook from the user or its confirmed local location.
-2. Confirm the current audio-provider terms cover retrieval, storage, public static playback, and any required attribution. Do this from official provider documentation at implementation time because terms and pricing change.
-3. Decide, with the user if needed, whether any neural fallback is acceptable when a licensed human recording cannot be used. The default in this plan is yes, with honest hidden metadata and no misleading human-audio claim.
-4. Confirm GitHub Pages as the final host only when the projected licensed audio size and terms fit it. Otherwise choose a static host that supports the chosen asset arrangement.
+## Definition of complete
 
-## Definition of ready to implement
-
-The repository is ready to start implementation once the following are true:
-
-- The workbook is available at the documented input path.
-- The audio licensing gate has an approved provider and fallback policy.
-- The implementing agent has read this plan and has not discovered a conflict with its repository instructions.
-- Work begins at implementation sequence item 1, with the data import gate completing before production content is generated.
+- The audited workbook import contains exactly 1,000 ranked entries.
+- All published examples pass deterministic and separate review-prompt gates with zero unresolved queue items.
+- Every entry has a validated browser-speech pronunciation record and recoverable playback states.
+- Unit, integration, desktop/mobile browser, dataset, pronunciation, formatting, lint, type, build, and dependency-audit checks pass.
+- `dist/` is a deployable static artifact; remote publication is performed only after a repository/host is configured.

@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-08-30T06:28:09.021Z",
+  "requested": 76,
+  "downloaded": 74,
+  "gapCount": 2,
+  "speakerPreference": [
+    "Sartus85",
+    "Poslovitch",
+    "LoquaxFR",
+    "WikiLucas00",
+    "Lepticed7",
+    "Jérémy-Günther-Heinz Jähnick",
+    "Guilhelma",
+    "GrandCelinien",
+    "Eihel",
+    "Mecanautes",
+    "Mathieu Kappler",
+    "0x010C"
+  ],
+  "gaps": [
+    {
+      "id": "0462",
+      "rank": 462,
+      "french": "d’autres",
+      "reason": "no French recording found on fr.wiktionary"
+    },
+    {
+      "id": "0790",
+      "rank": 790,
+      "french": "l’une",
+      "reason": "no French recording found on fr.wiktionary"
+    }
+  ],
+  "rejectedLicenses": []
+}
