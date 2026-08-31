@@ -189,7 +189,11 @@ The same endpoint flags work for `examples:review`. Without `--base-url`, the sc
 
 ## Deployment
 
-Vite is configured for a `/french-1000/` static deployment. No deployment workflow is enabled because this local repository currently has no configured remote. The production artifact is generated in `dist/` with:
+Live at **https://exekis.github.io/french-1000/**.
+
+Every push to `main` runs `.github/workflows/deploy.yml`, which validates the dataset, builds, and publishes to GitHub Pages. The dataset check runs before the build so a broken manifest stops the deploy rather than shipping a site with missing media.
+
+Vite is configured for a `/french-1000/` static deployment, which matches the repository name and so needs no override on Pages. To build the production artifact locally:
 
 ```sh
 npm run build:release
