@@ -52,6 +52,16 @@ body {
   min-width: 320px;
   margin: 0;
   background-color: var(--paper);
+}
+
+/* the stains and fibre used to sit on the body with background-attachment: fixed, which
+   makes the browser repaint the whole viewport on every scroll frame. as its own fixed
+   layer the paper looks the same and the compositor carries it for free */
+body::before {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  inset: 0;
   /* foxing stains first, then the grain, so the page reads as stored-away paper */
   background-image:
     radial-gradient(
@@ -75,7 +85,9 @@ body {
       transparent 70%
     ),
     var(--grain);
-  background-attachment: fixed, fixed, fixed, fixed, scroll;
+  /* asks for its own compositor layer, so scrolling never repaints the stains */
+  will-change: transform;
+  pointer-events: none;
 }
 
 button,
@@ -547,6 +559,10 @@ tbody th {
 /* each card is a postcard pasted onto the page at a slight angle */
 .word-card {
   position: relative;
+  /* a card off the screen costs nothing to keep around. the auto keyword lets the browser
+     remember the height it really had, so the scrollbar does not jump about */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 232px;
   scroll-margin-top: 16px;
   border: 1px solid var(--rule);
   background-color: var(--paper-card);

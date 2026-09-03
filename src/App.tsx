@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { AudioCredits } from './components/AudioCredits';
 import { BackToTop } from './components/BackToTop';
 import { CollageLayer } from './components/CollageLayer';
@@ -35,6 +35,7 @@ import {
   orderLanguages,
 } from './lib/languages';
 import { useMeanings } from './lib/meanings';
+import { useProgressiveRows } from './lib/progressive';
 import { filterWords } from './lib/search';
 import { useStoredState } from './lib/storage';
 import { StudyProvider } from './lib/study';
@@ -58,8 +59,12 @@ type AppProps = {
 
 export default function App({ initialWords = bundledWords }: AppProps) {
   const [query, setQuery] = useState('');
+  // the box has to keep up with typing while a thousand rows re-filter behind it, so the
+  // list works from a deferred copy and react is free to interrupt that render
+  const deferredQuery = useDeferredValue(query);
   const [rank, setRank] = useState('1');
   const [filter, setFilter] = useState<CollectionFilter>('all');
+  const pendingScroll = useRef<string | null>(null);
   const [revealed, setRevealed] = useState<ReadonlySet<string>>(new Set());
   const [settings, setSettings] = useStoredState<PracticeSettings>(
     PRACTICE_STORAGE_KEY,
@@ -77,10 +82,37 @@ export default function App({ initialWords = bundledWords }: AppProps) {
   const { loaded, pending, failed } = useMeanings(selectedLanguages);
 
   const results = useMemo(() => {
-    const matched = filterWords(initialWords, query, selectedLanguages, loaded);
+    const matched = filterWords(
+      initialWords,
+      deferredQuery,
+      selectedLanguages,
+      loaded,
+    );
     const allowed = selectFilteredIds(collections, filter);
     return allowed ? matched.filter((word) => allowed.has(word.id)) : matched;
-  }, [initialWords, query, collections, filter, selectedLanguages, loaded]);
+  }, [
+    initialWords,
+    deferredQuery,
+    collections,
+    filter,
+    selectedLanguages,
+    loaded,
+  ]);
+
+  // a jump clears the search first, and that clearing render is deferred, so the row may
+  // not be on the page yet. waiting for it to appear beats guessing at a frame. no dep
+  // list on purpose so every commit gets a look, which costs one ref read
+  useEffect(() => {
+    const target = pendingScroll.current;
+    if (!target) return;
+    const node = document.getElementById(`word-${target}`);
+    if (!node) return;
+    pendingScroll.current = null;
+    node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // the first paint only has to cover the screen, not the whole ledger
+  const [visibleCount, ensureRendered] = useProgressiveRows(results.length);
 
   const revealedInView = useMemo(
     () => results.filter((word) => revealed.has(word.id)).length,
@@ -122,11 +154,8 @@ export default function App({ initialWords = bundledWords }: AppProps) {
     setQuery('');
     setFilter('all');
     setRank(String(boundedRank));
-    window.requestAnimationFrame(() => {
-      document
-        .getElementById(`word-${word.id}`)
-        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
+    ensureRendered(boundedRank);
+    pendingScroll.current = word.id;
   }
 
   const resultLabel = `${results.length} ${results.length === 1 ? 'word' : 'words'}`;
@@ -240,6 +269,7 @@ export default function App({ initialWords = bundledWords }: AppProps) {
               <StudyProvider value={study}>
                 <WordList
                   words={results}
+                  count={visibleCount}
                   languages={selectedLanguages}
                   meanings={loaded}
                 />

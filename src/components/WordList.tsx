@@ -8,6 +8,8 @@ import { WordRow } from './WordRow';
 
 type WordListProps = {
   words: readonly Word[];
+  // how much of the list has been filled in so far; the rest arrives during idle time
+  count: number;
   languages: readonly LanguageCode[];
   meanings: Partial<Record<LanguageCode, MeaningMap>>;
 };
@@ -17,7 +19,7 @@ type WordListProps = {
 const FRENCH_WIDTH = 17;
 const EXAMPLE_WIDTH = 27;
 
-export function WordList({ words, languages, meanings }: WordListProps) {
+export function WordList({ words, count, languages, meanings }: WordListProps) {
   const isMobile = useMediaQuery('(max-width: 740px)');
   // past four meaning columns the row cannot stay readable at any sensible width, so
   // the frame scrolls sideways instead of squeezing the text
@@ -39,7 +41,7 @@ export function WordList({ words, languages, meanings }: WordListProps) {
   if (isMobile) {
     return (
       <div className="card-list" data-layout="cards">
-        {words.map((word) => (
+        {words.slice(0, count).map((word) => (
           <WordCard
             key={word.id}
             word={word}
@@ -84,7 +86,7 @@ export function WordList({ words, languages, meanings }: WordListProps) {
           </tr>
         </thead>
         <tbody>
-          {words.map((word) => (
+          {words.slice(0, count).map((word) => (
             <WordRow
               key={word.id}
               word={word}

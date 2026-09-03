@@ -34,6 +34,36 @@ export function createSearchKey(
   return normalizeSearchText(parts.join(' '));
 }
 
+// a key costs a unicode normalisation, three replacements and a locale lowercase, and it
+// only changes when the reader adds a language or a meanings file arrives. holding the
+// last set means typing compares against strings that are already built rather than
+// rebuilding all thousand of them on every keystroke
+let indexCache: {
+  words: readonly Word[];
+  languages: readonly LanguageCode[];
+  meanings: LoadedMeanings;
+  keys: readonly string[];
+} | null = null;
+
+export function searchIndexFor(
+  words: readonly Word[],
+  languages: readonly LanguageCode[],
+  meanings: LoadedMeanings,
+): readonly string[] {
+  if (
+    indexCache &&
+    indexCache.words === words &&
+    indexCache.languages === languages &&
+    indexCache.meanings === meanings
+  ) {
+    return indexCache.keys;
+  }
+
+  const keys = words.map((word) => createSearchKey(word, languages, meanings));
+  indexCache = { words, languages, meanings, keys };
+  return keys;
+}
+
 export function filterWords(
   words: readonly Word[],
   query: string,
@@ -42,11 +72,11 @@ export function filterWords(
 ): Word[] {
   const normalizedQuery = normalizeSearchText(query);
 
+  // an empty box returns everything, so the index is never built until someone searches
   if (!normalizedQuery) {
     return [...words];
   }
 
-  return words.filter((word) =>
-    createSearchKey(word, languages, meanings).includes(normalizedQuery),
-  );
+  const keys = searchIndexFor(words, languages, meanings);
+  return words.filter((_, index) => keys[index]!.includes(normalizedQuery));
 }

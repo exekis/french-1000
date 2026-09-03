@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   languageByCode,
   type LanguageCode,
@@ -17,7 +18,7 @@ type WordRowProps = {
   meanings: Partial<Record<LanguageCode, MeaningMap>>;
 };
 
-export function WordRow({ word, languages, meanings }: WordRowProps) {
+function WordRowImpl({ word, languages, meanings }: WordRowProps) {
   const study = useStudy();
   const meaningHidden = isMeaningHidden(
     study.settings,
@@ -91,3 +92,7 @@ export function WordRow({ word, languages, meanings }: WordRowProps) {
     </tr>
   );
 }
+
+// a row only depends on its own word, so it should sit still while the rest of the list
+// re-renders. this is what keeps typing in the search box cheap over a thousand rows
+export const WordRow = memo(WordRowImpl);
