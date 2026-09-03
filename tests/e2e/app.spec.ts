@@ -103,3 +103,29 @@ test('uses labelled cards and RTL Persian on a narrow viewport', async ({
   await expect(firstCard.getByText('Example')).toBeVisible();
   await expect(firstCard.locator('[lang="fa"]')).toHaveAttribute('dir', 'rtl');
 });
+
+test('offers a way back to the top once the page is scrolled away', async ({
+  page,
+}) => {
+  const backToTop = page.getByRole('button', { name: 'Back to top' });
+  await expect(backToTop).toBeHidden();
+
+  await page.mouse.wheel(0, 1600);
+  await expect(backToTop).toBeVisible();
+
+  await backToTop.click();
+  await expect.poll(async () => page.evaluate(() => window.scrollY)).toBe(0);
+  await expect(backToTop).toBeHidden();
+});
+
+test('reveals the way back after the random word jump lands deep in the list', async ({
+  page,
+}) => {
+  const backToTop = page.getByRole('button', { name: 'Back to top' });
+  await expect(backToTop).toBeHidden();
+
+  // a jump near the end of the list is the case where the button has to appear
+  await page.getByRole('spinbutton', { name: 'Go to rank' }).fill('900');
+  await page.getByRole('button', { name: 'Go', exact: true }).click();
+  await expect(backToTop).toBeVisible();
+});

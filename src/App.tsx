@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { AudioCredits } from './components/AudioCredits';
+import { BackToTop } from './components/BackToTop';
 import { CollageLayer } from './components/CollageLayer';
 import { CollectionControls } from './components/CollectionControls';
 import { EmptyState } from './components/EmptyState';
@@ -254,6 +255,8 @@ export default function App({ initialWords = bundledWords }: AppProps) {
         <p>Built for focused, everyday French practice.</p>
         <AudioCredits />
       </footer>
+
+      <BackToTop />
     </div>
   );
 }
