@@ -69,7 +69,7 @@ function runPiper(args: readonly string[], text: string): Promise<void> {
   });
 }
 
-const words = await readJson<Word[]>(wordsPath);
+const words = await readJson<(Word & { exampleFrench: string })[]>(wordsPath);
 const existing = await readOptionalJson<ExampleAudioEntry[]>(manifestPath, []);
 const byId = new Map(existing.map((entry) => [entry.id, entry]));
 

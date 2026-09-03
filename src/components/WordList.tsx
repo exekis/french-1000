@@ -12,14 +12,23 @@ type WordListProps = {
   count: number;
   languages: readonly LanguageCode[];
   meanings: Partial<Record<LanguageCode, MeaningMap>>;
+  targetLanguageName?: string;
+  targetLanguageCode?: string;
 };
 
-// french and the example keep a fixed share; the rest of the row is split between
+// headword and the example keep a fixed share; the rest of the row is split between
 // however many meanings the reader asked for
 const FRENCH_WIDTH = 17;
 const EXAMPLE_WIDTH = 27;
 
-export function WordList({ words, count, languages, meanings }: WordListProps) {
+export function WordList({
+  words,
+  count,
+  languages,
+  meanings,
+  targetLanguageName = 'French',
+  targetLanguageCode = 'fr',
+}: WordListProps) {
   const isMobile = useMediaQuery('(max-width: 740px)');
   // past four meaning columns the row cannot stay readable at any sensible width, so
   // the frame scrolls sideways instead of squeezing the text
@@ -47,6 +56,7 @@ export function WordList({ words, count, languages, meanings }: WordListProps) {
             word={word}
             languages={languages}
             meanings={meanings}
+            targetLanguageCode={targetLanguageCode}
           />
         ))}
       </div>
@@ -63,7 +73,7 @@ export function WordList({ words, count, languages, meanings }: WordListProps) {
         <thead>
           <tr>
             <th scope="col" style={layout.french}>
-              French
+              {targetLanguageName}
             </th>
             {languages.map((code) => {
               const language = languageByCode.get(code)!;
@@ -73,10 +83,10 @@ export function WordList({ words, count, languages, meanings }: WordListProps) {
                   scope="col"
                   style={layout.meaning}
                   className={
-                    language.direction === 'rtl' ? 'rtl-column' : undefined
+                    language?.direction === 'rtl' ? 'rtl-column' : undefined
                   }
                 >
-                  {language.label}
+                  {language?.label ?? code}
                 </th>
               );
             })}
@@ -92,6 +102,7 @@ export function WordList({ words, count, languages, meanings }: WordListProps) {
               word={word}
               languages={languages}
               meanings={meanings}
+              targetLanguageCode={targetLanguageCode}
             />
           ))}
         </tbody>

@@ -1,5 +1,5 @@
 import type { LanguageCode } from './languages';
-import type { Word } from '../types';
+import { getWordExample, getWordTerm, type Word } from '../types';
 
 const combiningMarks = /\p{M}/gu;
 const apostrophes = /[’‘`´]/g;
@@ -26,7 +26,12 @@ export function createSearchKey(
 ): string {
   // the two baseline meanings are always searchable, whether or not their column is
   // showing, so a reader can find a word by a meaning they are not currently reading
-  const parts = [word.french, word.english, word.persian, word.exampleFrench];
+  const parts = [
+    getWordTerm(word),
+    word.english,
+    word.persian,
+    getWordExample(word),
+  ];
   for (const code of languages) {
     const value = meanings[code]?.[word.id];
     if (value) parts.push(value);

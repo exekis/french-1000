@@ -7,7 +7,7 @@ import {
 import { meaningFor, type MeaningMap } from '../lib/meanings';
 import { isExampleHidden, isMeaningHidden } from '../lib/practice';
 import { useStudy } from '../lib/study';
-import type { Word } from '../types';
+import { getWordExample, getWordTerm, type Word } from '../types';
 import { MaskedMeaning } from './MaskedMeaning';
 import { PronunciationButton } from './PronunciationButton';
 import { WordSaveControls } from './WordSaveControls';
@@ -16,9 +16,15 @@ type WordRowProps = {
   word: Word;
   languages: readonly LanguageCode[];
   meanings: Partial<Record<LanguageCode, MeaningMap>>;
+  targetLanguageCode?: string;
 };
 
-function WordRowImpl({ word, languages, meanings }: WordRowProps) {
+function WordRowImpl({
+  word,
+  languages,
+  meanings,
+  targetLanguageCode,
+}: WordRowProps) {
   const study = useStudy();
   const meaningHidden = isMeaningHidden(
     study.settings,
@@ -31,13 +37,16 @@ function WordRowImpl({ word, languages, meanings }: WordRowProps) {
     word.id,
   );
   const reveal = () => study.reveal(word.id);
+  const term = getWordTerm(word);
+  const example = getWordExample(word);
+  const langCode = targetLanguageCode ?? (word.spanish ? 'es' : 'fr');
 
   return (
     <tr id={`word-${word.id}`}>
-      <th scope="row" className="french-cell">
+      <th scope="row" className="french-cell target-cell">
         <span className="rank">#{word.rank}</span>
-        <span lang="fr" className="french-term">
-          {word.french}
+        <span lang={langCode} className="french-term target-term">
+          {term}
         </span>
         <PronunciationButton word={word} />
         <WordSaveControls
@@ -55,8 +64,8 @@ function WordRowImpl({ word, languages, meanings }: WordRowProps) {
           <td
             key={code}
             lang={code}
-            dir={language.direction === 'rtl' ? 'rtl' : undefined}
-            className={language.direction === 'rtl' ? 'rtl-cell' : undefined}
+            dir={language?.direction === 'rtl' ? 'rtl' : undefined}
+            className={language?.direction === 'rtl' ? 'rtl-cell' : undefined}
             style={languageStyles[code]}
           >
             {value === undefined ? (
@@ -66,7 +75,7 @@ function WordRowImpl({ word, languages, meanings }: WordRowProps) {
             ) : (
               <MaskedMeaning
                 hidden={meaningHidden}
-                label={`${language.label} meaning of ${word.french}`}
+                label={`${language?.label ?? code} meaning of ${term}`}
                 onReveal={reveal}
               >
                 {value}
@@ -77,13 +86,13 @@ function WordRowImpl({ word, languages, meanings }: WordRowProps) {
       })}
       <td className="example-cell">
         <div className="example-line">
-          <span lang="fr">
+          <span lang={langCode}>
             <MaskedMeaning
               hidden={exampleHidden}
-              label={`example for ${word.french}`}
+              label={`example for ${term}`}
               onReveal={reveal}
             >
-              {word.exampleFrench}
+              {example}
             </MaskedMeaning>
           </span>
           <PronunciationButton word={word} kind="example" />

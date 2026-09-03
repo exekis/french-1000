@@ -164,6 +164,68 @@ footer {
   padding: 46px 36px 30px;
 }
 
+.course-switcher {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.course-switcher-list {
+  display: inline-flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 3px rgba(60, 44, 24, 0.15);
+}
+
+.course-switcher-item {
+  display: inline-flex;
+}
+
+.course-switcher-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  font-family: var(--font-type);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 3px;
+  transition: all 180ms ease;
+}
+
+.course-switcher-button:hover {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.course-switcher-button.active {
+  background: var(--paper-card);
+  color: var(--seal-deep);
+  font-weight: bold;
+  box-shadow: 1px 1px 3px rgba(60, 44, 24, 0.2);
+  border: 1px solid var(--rule-soft);
+}
+
+.course-switcher-button .course-badge {
+  font-size: 0.68rem;
+  padding: 1px 5px;
+  background: var(--rule-soft);
+  color: var(--ink-soft);
+  border-radius: 2px;
+}
+
+.course-switcher-button.active .course-badge {
+  background: var(--seal);
+  color: #fff;
+}
+
 /* the aged tricolour, washed out the way a printed flag fades */
 .header-rule {
   width: 100%;
@@ -453,7 +515,8 @@ tbody th {
   font-weight: inherit;
 }
 
-.french-cell {
+.french-cell,
+.target-cell {
   position: relative;
 }
 
@@ -466,7 +529,8 @@ tbody th {
   letter-spacing: 0.14em;
 }
 
-.french-term {
+.french-term,
+.target-term {
   display: inline-block;
   margin-right: 9px;
   font-family: var(--font-display);

@@ -1,10 +1,16 @@
-import { type LanguageCode, languages, orderLanguages } from '../lib/languages';
+import {
+  type LanguageCode,
+  type LanguageDefinition,
+  languages as defaultLanguages,
+  orderLanguages,
+} from '../lib/languages';
 
 type LanguagePickerProps = {
   selected: readonly LanguageCode[];
   pending: readonly LanguageCode[];
   failed: readonly LanguageCode[];
   onChange(next: LanguageCode[]): void;
+  availableLanguages?: LanguageDefinition[];
 };
 
 export function LanguagePicker({
@@ -12,12 +18,13 @@ export function LanguagePicker({
   pending,
   failed,
   onChange,
+  availableLanguages = defaultLanguages,
 }: LanguagePickerProps) {
   function toggle(code: LanguageCode, checked: boolean) {
     const next = checked
       ? orderLanguages([...selected, code])
       : selected.filter((entry) => entry !== code);
-    // a row with no meaning column at all is just a French word, so the last one stays
+    // a row with no meaning column at all is just a headword, so the last one stays
     if (next.length === 0) return;
     onChange(next);
   }
@@ -28,7 +35,7 @@ export function LanguagePicker({
         Meanings
       </p>
       <ul aria-labelledby="language-picker-label">
-        {languages.map((language) => {
+        {availableLanguages.map((language) => {
           const checked = selected.includes(language.code);
           const isLast = checked && selected.length === 1;
           return (

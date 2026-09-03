@@ -7,7 +7,7 @@ import {
 import { meaningFor, type MeaningMap } from '../lib/meanings';
 import { isExampleHidden, isMeaningHidden } from '../lib/practice';
 import { useStudy } from '../lib/study';
-import type { Word } from '../types';
+import { getWordExample, getWordTerm, type Word } from '../types';
 import { MaskedMeaning } from './MaskedMeaning';
 import { PronunciationButton } from './PronunciationButton';
 import { WordSaveControls } from './WordSaveControls';
@@ -16,9 +16,15 @@ type WordCardProps = {
   word: Word;
   languages: readonly LanguageCode[];
   meanings: Partial<Record<LanguageCode, MeaningMap>>;
+  targetLanguageCode?: string;
 };
 
-function WordCardImpl({ word, languages, meanings }: WordCardProps) {
+function WordCardImpl({
+  word,
+  languages,
+  meanings,
+  targetLanguageCode,
+}: WordCardProps) {
   const study = useStudy();
   const meaningHidden = isMeaningHidden(
     study.settings,
@@ -31,13 +37,16 @@ function WordCardImpl({ word, languages, meanings }: WordCardProps) {
     word.id,
   );
   const reveal = () => study.reveal(word.id);
+  const term = getWordTerm(word);
+  const example = getWordExample(word);
+  const langCode = targetLanguageCode ?? (word.spanish ? 'es' : 'fr');
 
   return (
     <article className="word-card" id={`word-${word.id}`}>
       <header>
         <div>
           <span className="rank">#{word.rank}</span>
-          <h2 lang="fr">{word.french}</h2>
+          <h2 lang={langCode}>{term}</h2>
         </div>
         <div className="card-controls">
           <PronunciationButton word={word} />
@@ -56,12 +65,12 @@ function WordCardImpl({ word, languages, meanings }: WordCardProps) {
           const value = meaningFor(word, code, meanings);
           return (
             <div key={code}>
-              <dt>{language.label}</dt>
+              <dt>{language?.label ?? code}</dt>
               <dd
                 lang={code}
-                dir={language.direction === 'rtl' ? 'rtl' : undefined}
+                dir={language?.direction === 'rtl' ? 'rtl' : undefined}
                 className={
-                  language.direction === 'rtl' ? 'rtl-cell' : undefined
+                  language?.direction === 'rtl' ? 'rtl-cell' : undefined
                 }
                 style={languageStyles[code]}
               >
@@ -75,7 +84,7 @@ function WordCardImpl({ word, languages, meanings }: WordCardProps) {
                 ) : (
                   <MaskedMeaning
                     hidden={meaningHidden}
-                    label={`${language.label} meaning of ${word.french}`}
+                    label={`${language?.label ?? code} meaning of ${term}`}
                     onReveal={reveal}
                   >
                     {value}
@@ -89,13 +98,13 @@ function WordCardImpl({ word, languages, meanings }: WordCardProps) {
           <dt>Example</dt>
           <dd>
             <div className="example-line">
-              <span lang="fr">
+              <span lang={langCode}>
                 <MaskedMeaning
                   hidden={exampleHidden}
-                  label={`example for ${word.french}`}
+                  label={`example for ${term}`}
                   onReveal={reveal}
                 >
-                  {word.exampleFrench}
+                  {example}
                 </MaskedMeaning>
               </span>
               <PronunciationButton word={word} kind="example" />

@@ -55,4 +55,27 @@ describe('app', () => {
       'The vocabulary is being prepared',
     );
   });
+
+  test('renders Spanish course with Spanish column header and title', async () => {
+    const user = userEvent.setup();
+    render(<App initialCourseId="spanish" />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: /Spanish\s*1000/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Spanish' }),
+    ).toBeInTheDocument();
+
+    // switch to French
+    const frenchSwitch = screen.getByRole('link', { name: /French\s*1000/ });
+    await user.click(frenchSwitch);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: /French\s*1000/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'French' }),
+    ).toBeInTheDocument();
+  });
 });

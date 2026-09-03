@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Word } from '../types';
 import type { LanguageCode } from './languages';
+import type { CourseId } from './courses';
 
 export type MeaningMap = Record<string, string>;
 
@@ -11,7 +12,7 @@ type MeaningFile = {
 
 // a static map keeps these as separate chunks Vite can split, so a reader only ever
 // downloads the languages they turned on
-const loaders: Partial<
+const frenchLoaders: Partial<
   Record<LanguageCode, () => Promise<{ default: MeaningFile }>>
 > = {
   es: () => import('../data/meanings/es.json'),
@@ -22,9 +23,20 @@ const loaders: Partial<
   zh: () => import('../data/meanings/zh.json'),
 };
 
+const spanishLoaders: Partial<
+  Record<LanguageCode, () => Promise<{ default: MeaningFile }>>
+> = {
+  fr: () => import('../data/spanish/meanings/fr.json'),
+  de: () => import('../data/spanish/meanings/de.json'),
+  it: () => import('../data/spanish/meanings/it.json'),
+  pt: () => import('../data/spanish/meanings/pt.json'),
+  ar: () => import('../data/spanish/meanings/ar.json'),
+  zh: () => import('../data/spanish/meanings/zh.json'),
+};
+
 // module scope so turning a language off and on again does not fetch it twice
-const cache = new Map<LanguageCode, MeaningMap>();
-const inFlight = new Set<LanguageCode>();
+const cache = new Map<string, MeaningMap>();
+const inFlight = new Set<string>();
 
 export type MeaningState = {
   loaded: Partial<Record<LanguageCode, MeaningMap>>;
@@ -32,47 +44,60 @@ export type MeaningState = {
   failed: LanguageCode[];
 };
 
-export function useMeanings(codes: readonly LanguageCode[]): MeaningState {
+export function useMeanings(
+  codes: readonly LanguageCode[],
+  courseId: CourseId = 'french',
+): MeaningState {
+  const loaders = courseId === 'spanish' ? spanishLoaders : frenchLoaders;
   const [loaded, setLoaded] = useState<
     Partial<Record<LanguageCode, MeaningMap>>
-  >(() => Object.fromEntries(cache));
+  >({});
   const [failed, setFailed] = useState<LanguageCode[]>([]);
 
-  const key = codes.join(',');
-
   useEffect(() => {
-    const wanted = key ? (key.split(',') as LanguageCode[]) : [];
-    const missing = wanted.filter(
-      (code) => loaders[code] && !cache.has(code) && !inFlight.has(code),
+    const missing = codes.filter(
+      (code) =>
+        loaders[code] &&
+        !cache.has(`${courseId}:${code}`) &&
+        !inFlight.has(`${courseId}:${code}`),
     );
     if (missing.length === 0) return;
 
-    missing.forEach((code) => inFlight.add(code));
-    // the result is adopted even if the reader has since switched this language off.
-    // cancelling the state write here would strand a finished file in the module cache,
-    // where no later effect would pick it up because the cache already holds it
+    missing.forEach((code) => inFlight.add(`${courseId}:${code}`));
     void Promise.all(
       missing.map(async (code) => {
         try {
           const file = await loaders[code]!();
-          cache.set(code, file.default.meanings ?? {});
-          setLoaded((current) => ({ ...current, [code]: cache.get(code)! }));
+          cache.set(`${courseId}:${code}`, file.default.meanings ?? {});
+          setLoaded((current) => ({
+            ...current,
+            [code]: cache.get(`${courseId}:${code}`)!,
+          }));
         } catch {
           setFailed((current) => [...new Set([...current, code])]);
         } finally {
-          inFlight.delete(code);
+          inFlight.delete(`${courseId}:${code}`);
         }
       }),
     );
-  }, [key]);
+  }, [codes, courseId, loaders]);
 
-  // pending is simply what is still wanted and not yet here, so it needs no state of
-  // its own and never has to be written from inside the effect
+  const activeLoaded = useMemo(() => {
+    const merged = { ...loaded };
+    for (const code of codes) {
+      const cached = cache.get(`${courseId}:${code}`);
+      if (cached && !merged[code]) {
+        merged[code] = cached;
+      }
+    }
+    return merged;
+  }, [loaded, codes, courseId]);
+
   const pending = codes.filter(
-    (code) => loaders[code] && !loaded[code] && !failed.includes(code),
+    (code) => loaders[code] && !activeLoaded[code] && !failed.includes(code),
   );
 
-  return { loaded, pending, failed };
+  return { loaded: activeLoaded, pending, failed };
 }
 
 export function meaningFor(

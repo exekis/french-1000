@@ -3,17 +3,21 @@ import { AudioCredits } from './components/AudioCredits';
 import { BackToTop } from './components/BackToTop';
 import { CollageLayer } from './components/CollageLayer';
 import { CollectionControls } from './components/CollectionControls';
+import { CourseSwitcher } from './components/CourseSwitcher';
 import { EmptyState } from './components/EmptyState';
 import { OrnamentRule } from './components/Ephemera';
 import { LanguagePicker } from './components/LanguagePicker';
 import { PracticeControls } from './components/PracticeControls';
 import { SearchBar } from './components/SearchBar';
 import { WordList } from './components/WordList';
-import testWords from './data/words.test.json';
-import releaseWords from './data/words.json';
+import frenchTestWords from './data/words.test.json';
+import frenchReleaseWords from './data/words.json';
+import frenchCredits from './data/audio-credits.json';
+import spanishTestWords from './data/spanish/words.test.json';
+import spanishReleaseWords from './data/spanish/words.json';
+import spanishCredits from './data/spanish/audio-credits.json';
 import {
   type CollectionFilter,
-  COLLECTIONS_STORAGE_KEY,
   createList,
   defaultCollections,
   deleteList,
@@ -25,7 +29,6 @@ import {
 import {
   defaultPracticeSettings,
   parsePracticeSettings,
-  PRACTICE_STORAGE_KEY,
   type PracticeSettings,
 } from './lib/practice';
 import {
@@ -34,14 +37,19 @@ import {
   type LanguageCode,
   orderLanguages,
 } from './lib/languages';
+import {
+  type CourseId,
+  courses,
+  resolveCourseFromLocation,
+  navigateToCourse,
+  subscribeToCourseChange,
+} from './lib/courses';
 import { useMeanings } from './lib/meanings';
 import { useProgressiveRows } from './lib/progressive';
 import { filterWords } from './lib/search';
 import { useStoredState } from './lib/storage';
 import { StudyProvider } from './lib/study';
-import type { Word } from './types';
-
-const LANGUAGES_STORAGE_KEY = 'french-1000:languages';
+import type { AudioCredits as AudioCreditsData, Word } from './types';
 
 function parseLanguages(raw: unknown): LanguageCode[] | null {
   if (!Array.isArray(raw)) return null;
@@ -49,15 +57,43 @@ function parseLanguages(raw: unknown): LanguageCode[] | null {
   return codes.length > 0 ? codes : null;
 }
 
-const bundledWords = (
-  import.meta.env.MODE === 'test' ? testWords : releaseWords
+const bundledFrenchWords = (
+  import.meta.env.MODE === 'test' ? frenchTestWords : frenchReleaseWords
+) as Word[];
+
+const bundledSpanishWords = (
+  import.meta.env.MODE === 'test' ? spanishTestWords : spanishReleaseWords
 ) as Word[];
 
 type AppProps = {
   initialWords?: Word[];
+  initialCourseId?: CourseId;
 };
 
-export default function App({ initialWords = bundledWords }: AppProps) {
+export default function App({ initialWords, initialCourseId }: AppProps) {
+  const [courseId, setCourseId] = useState<CourseId>(
+    () => initialCourseId ?? resolveCourseFromLocation(),
+  );
+
+  useEffect(() => {
+    return subscribeToCourseChange((nextCourseId) => {
+      setCourseId(nextCourseId);
+    });
+  }, []);
+
+  const activeCourse = courses[courseId];
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = `${activeCourse.title} — ${activeCourse.eyebrow}`;
+    }
+  }, [activeCourse]);
+
+  const words = useMemo(() => {
+    if (initialWords) return initialWords;
+    return courseId === 'spanish' ? bundledSpanishWords : bundledFrenchWords;
+  }, [initialWords, courseId]);
+
   const [query, setQuery] = useState('');
   // the box has to keep up with typing while a thousand rows re-filter behind it, so the
   // list works from a deferred copy and react is free to interrupt that render
@@ -66,38 +102,33 @@ export default function App({ initialWords = bundledWords }: AppProps) {
   const [filter, setFilter] = useState<CollectionFilter>('all');
   const pendingScroll = useRef<string | null>(null);
   const [revealed, setRevealed] = useState<ReadonlySet<string>>(new Set());
+
   const [settings, setSettings] = useStoredState<PracticeSettings>(
-    PRACTICE_STORAGE_KEY,
+    activeCourse.storageKeys.practice,
     defaultPracticeSettings,
     parsePracticeSettings,
   );
   const [collections, setCollections] = useStoredState(
-    COLLECTIONS_STORAGE_KEY,
+    activeCourse.storageKeys.collections,
     defaultCollections,
     parseCollections,
   );
   const [selectedLanguages, setSelectedLanguages] = useStoredState<
     LanguageCode[]
-  >(LANGUAGES_STORAGE_KEY, DEFAULT_LANGUAGES, parseLanguages);
-  const { loaded, pending, failed } = useMeanings(selectedLanguages);
+  >(activeCourse.storageKeys.languages, DEFAULT_LANGUAGES, parseLanguages);
+
+  const { loaded, pending, failed } = useMeanings(selectedLanguages, courseId);
 
   const results = useMemo(() => {
     const matched = filterWords(
-      initialWords,
+      words,
       deferredQuery,
       selectedLanguages,
       loaded,
     );
     const allowed = selectFilteredIds(collections, filter);
     return allowed ? matched.filter((word) => allowed.has(word.id)) : matched;
-  }, [
-    initialWords,
-    deferredQuery,
-    collections,
-    filter,
-    selectedLanguages,
-    loaded,
-  ]);
+  }, [words, deferredQuery, collections, filter, selectedLanguages, loaded]);
 
   // a jump clears the search first, and that clearing render is deferred, so the row may
   // not be on the page yet. waiting for it to appear beats guessing at a frame. no dep
@@ -147,8 +178,8 @@ export default function App({ initialWords = bundledWords }: AppProps) {
   }
 
   function goToRank(nextRank: number) {
-    const boundedRank = Math.min(Math.max(nextRank, 1), initialWords.length);
-    const word = initialWords[boundedRank - 1];
+    const boundedRank = Math.min(Math.max(nextRank, 1), words.length);
+    const word = words[boundedRank - 1];
     if (!word) return;
 
     setQuery('');
@@ -158,30 +189,43 @@ export default function App({ initialWords = bundledWords }: AppProps) {
     pendingScroll.current = word.id;
   }
 
+  function handleSelectCourse(nextCourseId: CourseId) {
+    setCourseId(nextCourseId);
+    setQuery('');
+    setFilter('all');
+    setRank('1');
+    setRevealed(new Set());
+    navigateToCourse(nextCourseId);
+  }
+
   const resultLabel = `${results.length} ${results.length === 1 ? 'word' : 'words'}`;
+  const currentCredits = (
+    courseId === 'spanish' ? spanishCredits : frenchCredits
+  ) as AudioCreditsData;
 
   return (
     <div className="page-shell">
       <CollageLayer />
       <header className="site-header">
+        <CourseSwitcher
+          currentCourseId={courseId}
+          onSelectCourse={handleSelectCourse}
+        />
         <div className="header-rule" />
         <div className="header-copy">
-          <p className="eyebrow">A beginner’s working vocabulary</p>
+          <p className="eyebrow">{activeCourse.eyebrow}</p>
           <h1>
-            French <span>1000</span>
+            {activeCourse.name} <span>1000</span>
           </h1>
           <OrnamentRule />
-          <p className="intro">
-            One thousand useful French words in the supplied order, with clear
-            English and Persian meanings, a short example, and pronunciation.
-          </p>
+          <p className="intro">{activeCourse.intro}</p>
         </div>
       </header>
 
       <main>
         <section className="tool-panel" aria-label="Vocabulary controls">
           <SearchBar query={query} onQueryChange={setQuery} />
-          {initialWords.length > 0 && (
+          {words.length > 0 && (
             <div className="rank-navigation">
               <label htmlFor="rank-input">Go to rank</label>
               <div>
@@ -189,7 +233,7 @@ export default function App({ initialWords = bundledWords }: AppProps) {
                   id="rank-input"
                   type="number"
                   min="1"
-                  max={initialWords.length}
+                  max={words.length}
                   value={rank}
                   onChange={(event) => setRank(event.target.value)}
                   onKeyDown={(event) => {
@@ -202,9 +246,7 @@ export default function App({ initialWords = bundledWords }: AppProps) {
                 <button
                   type="button"
                   onClick={() =>
-                    goToRank(
-                      Math.floor(Math.random() * initialWords.length) + 1,
-                    )
+                    goToRank(Math.floor(Math.random() * words.length) + 1)
                   }
                 >
                   Random word
@@ -214,7 +256,7 @@ export default function App({ initialWords = bundledWords }: AppProps) {
           )}
         </section>
 
-        {initialWords.length > 0 && (
+        {words.length > 0 && (
           <section className="study-panel" aria-label="Study controls">
             <PracticeControls
               settings={settings}
@@ -234,6 +276,7 @@ export default function App({ initialWords = bundledWords }: AppProps) {
               pending={pending}
               failed={failed}
               onChange={setSelectedLanguages}
+              availableLanguages={activeCourse.translationLanguages}
             />
             <CollectionControls
               collections={collections}
@@ -247,7 +290,7 @@ export default function App({ initialWords = bundledWords }: AppProps) {
           </section>
         )}
 
-        {initialWords.length === 0 ? (
+        {words.length === 0 ? (
           <output className="data-pending">
             <p className="empty-kicker">Content gate active</p>
             <h2>The vocabulary is being prepared</h2>
@@ -272,6 +315,8 @@ export default function App({ initialWords = bundledWords }: AppProps) {
                   count={visibleCount}
                   languages={selectedLanguages}
                   meanings={loaded}
+                  targetLanguageName={activeCourse.name}
+                  targetLanguageCode={activeCourse.code}
                 />
               </StudyProvider>
             ) : (
@@ -282,8 +327,11 @@ export default function App({ initialWords = bundledWords }: AppProps) {
       </main>
 
       <footer>
-        <p>Built for focused, everyday French practice.</p>
-        <AudioCredits />
+        <p>{activeCourse.footerText}</p>
+        <AudioCredits
+          credits={currentCredits}
+          languageName={activeCourse.name}
+        />
       </footer>
 
       <BackToTop />

@@ -10,10 +10,12 @@ export type ReviewStatus = 'pending' | 'auto-checked' | 'human-reviewed';
 export type Word = {
   id: string;
   rank: number;
-  french: string;
+  french?: string;
+  spanish?: string;
   english: string;
   persian: string;
-  exampleFrench: string;
+  exampleFrench?: string;
+  exampleSpanish?: string;
   exampleTarget: string;
   pronunciationTarget: string;
   pronunciationIpa?: string;
@@ -38,6 +40,14 @@ export type Word = {
     flags: string[];
   };
 };
+
+export function getWordTerm(word: Word): string {
+  return word.spanish ?? word.french ?? '';
+}
+
+export function getWordExample(word: Word): string {
+  return word.exampleSpanish ?? word.exampleFrench ?? '';
+}
 
 export type AudioCredits = {
   generatedAt: string;

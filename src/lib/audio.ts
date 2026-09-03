@@ -1,5 +1,5 @@
 import { resolveAssetPath } from './assets';
-import type { Word } from '../types';
+import { getWordExample, type Word } from '../types';
 
 export type PlaybackStatus =
   'idle' | 'loading' | 'playing' | 'paused' | 'error';
@@ -132,6 +132,37 @@ export function selectFrenchVoice<T extends VoiceLike>(
   return ranked[0]?.voice ?? null;
 }
 
+function spanishLanguageRank(lang: string): number {
+  const lowered = lang.toLocaleLowerCase('en').replace('_', '-');
+  if (lowered.startsWith('es-es')) return 0;
+  if (lowered.startsWith('es-mx')) return 1;
+  if (lowered.startsWith('es-us')) return 2;
+  if (lowered.startsWith('es')) return 3;
+  return Number.POSITIVE_INFINITY;
+}
+
+export function selectSpanishVoice<T extends VoiceLike>(
+  voices: readonly T[],
+): T | null {
+  const ranked = voices
+    .map((voice, index) => ({ voice, index }))
+    .filter(({ voice }) => Number.isFinite(spanishLanguageRank(voice.lang)))
+    .toSorted((a, b) => {
+      const tier = voiceTier(a.voice.name) - voiceTier(b.voice.name);
+      if (tier !== 0) return tier;
+      const language =
+        spanishLanguageRank(a.voice.lang) - spanishLanguageRank(b.voice.lang);
+      if (language !== 0) return language;
+      const local =
+        Number(a.voice.localService ?? true) -
+        Number(b.voice.localService ?? true);
+      if (local !== 0) return local;
+      return a.index - b.index;
+    });
+
+  return ranked[0]?.voice ?? null;
+}
+
 // a word always has a recording; the example sentence only has one once it has been
 // spoken, and until then the browser reads it
 function clipPathFor(word: Word, kind: PlaybackKind): string | null {
@@ -162,7 +193,7 @@ export class AudioController {
   private state: PlaybackState = initialState;
   private currentWord: Word | null = null;
   private currentKind: PlaybackKind = 'word';
-  private cachedVoice: VoiceLike | null = null;
+  private cachedVoices = new Map<string, VoiceLike | null>();
 
   constructor(
     createAudio: AudioFactory = createBrowserAudio,
@@ -267,13 +298,14 @@ export class AudioController {
     speech.cancel();
     this.currentWord = word;
     this.currentKind = kind;
+    const isSpanish = Boolean(word.spanish);
+    const speechLang = isSpanish ? 'es-ES' : 'fr-FR';
+    const langCode = isSpanish ? 'es' : 'fr';
     const utterance = this.createUtterance(
-      kind === 'example' ? word.exampleFrench : word.pronunciationTarget,
+      kind === 'example' ? getWordExample(word) : word.pronunciationTarget,
     );
-    utterance.lang = 'fr-FR';
-    // leaving voice unset makes the platform pick its default fr-FR engine, which is
-    // the compact robotic one on macOS and iOS
-    const voice = this.resolveVoice(speech);
+    utterance.lang = speechLang;
+    const voice = this.resolveVoice(speech, langCode);
     if (voice) utterance.voice = voice as SpeechSynthesisVoice;
     utterance.rate = 0.95;
     utterance.addEventListener('start', () => {
@@ -305,14 +337,23 @@ export class AudioController {
     speech.speak(utterance);
   }
 
-  private resolveVoice(speech: SpeechPort): VoiceLike | null {
-    if (this.cachedVoice) return this.cachedVoice;
+  private resolveVoice(
+    speech: SpeechPort,
+    langCode: 'fr' | 'es' = 'fr',
+  ): VoiceLike | null {
+    if (this.cachedVoices.has(langCode)) {
+      return this.cachedVoices.get(langCode) ?? null;
+    }
     // several browsers populate the voice list asynchronously, so an empty list here
     // just means we try again on the next press rather than caching the miss
     const voices = speech.getVoices?.() ?? [];
     if (voices.length === 0) return null;
-    this.cachedVoice = selectFrenchVoice(voices);
-    return this.cachedVoice;
+    const voice =
+      langCode === 'es'
+        ? selectSpanishVoice(voices)
+        : selectFrenchVoice(voices);
+    this.cachedVoices.set(langCode, voice);
+    return voice;
   }
 
   private getAudio(): AudioPort {

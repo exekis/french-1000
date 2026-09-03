@@ -1,0 +1,68 @@
+[
+  {
+    "id": "0001",
+    "rank": 1,
+    "spanish": "que",
+    "english": "that; which; who",
+    "persian": "که؛ چه",
+    "exampleSpanish": "Creo que tienes razón.",
+    "exampleTarget": "que",
+    "pronunciationTarget": "que",
+    "audio": {
+      "path": "/audio/spanish/0001-que.mp3",
+      "provider": "browser-speech",
+      "kind": "neural",
+      "licenseReference": "test-fixture"
+    },
+    "review": {
+      "meaning": "reviewed",
+      "example": "human-reviewed",
+      "pronunciation": "human-reviewed",
+      "flags": ["conjunction"]
+    }
+  },
+  {
+    "id": "0002",
+    "rank": 2,
+    "spanish": "hola",
+    "english": "hello",
+    "persian": "سلام",
+    "exampleSpanish": "Hola, ¿cómo estás hoy?",
+    "exampleTarget": "Hola",
+    "pronunciationTarget": "hola",
+    "audio": {
+      "path": "/audio/spanish/0002-hola.mp3",
+      "provider": "browser-speech",
+      "kind": "neural",
+      "licenseReference": "test-fixture"
+    },
+    "review": {
+      "meaning": "reviewed",
+      "example": "human-reviewed",
+      "pronunciation": "human-reviewed",
+      "flags": ["greeting"]
+    }
+  },
+  {
+    "id": "0003",
+    "rank": 3,
+    "spanish": "casa",
+    "english": "house; home",
+    "persian": "خانه",
+    "exampleSpanish": "Mi casa está cerca del parque.",
+    "exampleTarget": "casa",
+    "pronunciationTarget": "casa",
+    "audio": {
+      "path": "/audio/spanish/0003-casa.mp3",
+      "provider": "browser-speech",
+      "kind": "neural",
+      "licenseReference": "test-fixture"
+    },
+    "review": {
+      "meaning": "reviewed",
+      "example": "human-reviewed",
+      "pronunciation": "human-reviewed",
+      "flags": ["noun"]
+    }
+  }
+]

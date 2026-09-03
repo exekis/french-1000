@@ -26,11 +26,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - uses: actions/configure-pages@v5
+        id: pages
       # the audio and artwork manifests are gates on the published dataset, so a broken
       # one should stop the deploy rather than ship a site with missing media
       - run: npm run validate:data
       - run: npm run build
-      - uses: actions/configure-pages@v5
+        env:
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

@@ -31,7 +31,7 @@ export function validateWordDataset(
     errors.push(`expected ${expectedCount} records, found ${input.length}`);
   }
 
-  const words: Word[] = [];
+  const words: (Word & { french: string; exampleFrench: string })[] = [];
   input.forEach((record, index) => {
     const parsed = wordSchema.safeParse(record);
     if (!parsed.success) {

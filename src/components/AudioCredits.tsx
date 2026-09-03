@@ -4,6 +4,8 @@ import type { AudioCredits as AudioCreditsData } from '../types';
 
 type AudioCreditsProps = {
   credits?: AudioCreditsData;
+  languageName?: string;
+  description?: string;
 };
 
 const providerLabels: Record<string, string> = {
@@ -16,6 +18,8 @@ const providerLabels: Record<string, string> = {
 
 export function AudioCredits({
   credits = bundledCredits as AudioCreditsData,
+  languageName = 'French',
+  description,
 }: AudioCreditsProps) {
   const namedSpeakers = credits.speakers;
   const artwork = (stickerManifest.stickers ?? []) as {
@@ -30,9 +34,10 @@ export function AudioCredits({
       <summary>Credits and licences</summary>
       <div className="audio-credits-body">
         <p>
-          Pronunciations are recordings of native French speakers, shared
-          through Wikimedia Commons and the Lingua Libre project. They are used
-          here under the licences below, which require attribution.
+          {description ??
+            (languageName === 'French'
+              ? 'Pronunciations are recordings of native French speakers, shared through Wikimedia Commons and the Lingua Libre project. They are used here under the licences below, which require attribution.'
+              : 'Pronunciations are synthesized via high-fidelity neural speech engines and open voice models configured for Spanish. Recordings and artwork are used under the licences below.')}
         </p>
 
         <h3>Sources</h3>

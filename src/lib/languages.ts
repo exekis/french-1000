@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 
 export type LanguageCode =
-  'en' | 'fa' | 'es' | 'de' | 'it' | 'pt' | 'ar' | 'zh';
+  'en' | 'fa' | 'fr' | 'es' | 'de' | 'it' | 'pt' | 'ar' | 'zh';
 
 export type LanguageDefinition = {
   code: LanguageCode;

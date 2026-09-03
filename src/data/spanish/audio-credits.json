@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-09-03T10:00:00.000Z",
+  "totalRecordings": 1000,
+  "providers": [
+    {
+      "provider": "browser-speech",
+      "kind": "neural",
+      "recordings": 1000
+    }
+  ],
+  "speakers": [],
+  "licenses": [
+    {
+      "name": "Web Speech API",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API",
+      "recordings": 1000
+    }
+  ],
+  "synthesizedVoices": [
+    {
+      "voiceName": "es-ES Neural Speech",
+      "recordings": 1000,
+      "licenseReference": "Web Speech API (https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)"
+    }
+  ]
+}
