@@ -1,6 +1,7 @@
 import {
+  type LanguageCode,
   type LanguageDefinition,
-  languages as frenchLanguages,
+  languages,
 } from './languages';
 
 export type CourseId = 'french' | 'spanish';
@@ -23,68 +24,11 @@ export type CourseConfig = {
   translationLanguages: LanguageDefinition[];
 };
 
-export const spanishLanguages: LanguageDefinition[] = [
-  {
-    code: 'en',
-    label: 'English',
-    endonym: 'English',
-    direction: 'ltr',
-    bundled: true,
-  },
-  {
-    code: 'fa',
-    label: 'Persian',
-    endonym: 'فارسی',
-    direction: 'rtl',
-    fontStack: "'Geeza Pro', Tahoma, 'Noto Naskh Arabic', sans-serif",
-    bundled: true,
-  },
-  {
-    code: 'fr',
-    label: 'French',
-    endonym: 'Français',
-    direction: 'ltr',
-    bundled: false,
-  },
-  {
-    code: 'de',
-    label: 'German',
-    endonym: 'Deutsch',
-    direction: 'ltr',
-    bundled: false,
-  },
-  {
-    code: 'it',
-    label: 'Italian',
-    endonym: 'Italiano',
-    direction: 'ltr',
-    bundled: false,
-  },
-  {
-    code: 'pt',
-    label: 'Portuguese',
-    endonym: 'Português',
-    direction: 'ltr',
-    bundled: false,
-  },
-  {
-    code: 'ar',
-    label: 'Arabic',
-    endonym: 'العربية',
-    direction: 'rtl',
-    fontStack: "'Geeza Pro', Tahoma, 'Noto Naskh Arabic', sans-serif",
-    bundled: false,
-  },
-  {
-    code: 'zh',
-    label: 'Mandarin',
-    endonym: '中文',
-    direction: 'ltr',
-    fontStack:
-      "'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif",
-    bundled: false,
-  },
-];
+// a course never offers its own language as a meaning column, so each list is the
+// registry minus the language being taught
+function translationLanguagesFor(code: LanguageCode): LanguageDefinition[] {
+  return languages.filter((language) => language.code !== code);
+}
 
 export const courses: Record<CourseId, CourseConfig> = {
   french: {
@@ -103,7 +47,7 @@ export const courses: Record<CourseId, CourseConfig> = {
       collections: 'french-1000:collections',
       languages: 'french-1000:languages',
     },
-    translationLanguages: frenchLanguages,
+    translationLanguages: translationLanguagesFor('fr'),
   },
   spanish: {
     id: 'spanish',
@@ -121,7 +65,7 @@ export const courses: Record<CourseId, CourseConfig> = {
       collections: 'spanish-1000:collections',
       languages: 'spanish-1000:languages',
     },
-    translationLanguages: spanishLanguages,
+    translationLanguages: translationLanguagesFor('es'),
   },
 };
 

@@ -39,6 +39,11 @@ const exampleAudioPath = getOption(
   fromRoot('data/curated/example-audio-manifest.json'),
 )!;
 
+// the english reading of each example is generated against the published list rather
+// than the curation chain, so it is read back here and re-attached below
+const shippedRaw = await readOptionalJson<PublishedWord[]>(outputPath, []);
+const shippedById = new Map(shippedRaw.map((word) => [word.id, word]));
+
 const importedRaw = await readJson<unknown[]>(wordsPath);
 const importedWords = importedRaw.map((record, index) => {
   const result = importedWordSchema.safeParse(record);
@@ -131,6 +136,13 @@ for (const imported of importedWords) {
     english: imported.english,
     persian: imported.persian,
     exampleFrench: example.exampleFrench,
+    ...(() => {
+      const shipped = shippedById.get(imported.id);
+      // a reading belongs to one sentence, so a changed example drops its old reading
+      if (!shipped?.exampleEnglish) return {};
+      if (shipped.exampleFrench !== example.exampleFrench) return {};
+      return { exampleEnglish: shipped.exampleEnglish };
+    })(),
     exampleTarget: example.exampleTarget,
     pronunciationTarget: audio.pronunciationTarget,
     ...(audio.pronunciationIpa

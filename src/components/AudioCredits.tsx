@@ -37,7 +37,7 @@ export function AudioCredits({
           {description ??
             (languageName === 'French'
               ? 'Pronunciations are recordings of native French speakers, shared through Wikimedia Commons and the Lingua Libre project. They are used here under the licences below, which require attribution.'
-              : 'Pronunciations are synthesized via high-fidelity neural speech engines and open voice models configured for Spanish. Recordings and artwork are used under the licences below.')}
+              : `Nothing is recorded for ${languageName}. Every word and example is spoken by your own browser's speech engine, so the voice you hear is whichever one your device provides. Artwork is used under the licences below.`)}
         </p>
 
         <h3>Sources</h3>

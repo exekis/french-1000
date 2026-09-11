@@ -1,4 +1,10 @@
-import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -14,12 +20,34 @@ function spaRoutesPlugin(): Plugin {
       // 404 fallback for GitHub Pages single page routing
       copyFileSync(indexPath, resolve(distDir, '404.html'));
 
-      // sub-directories so direct URL visits work without server-side rewrites
-      const routes = ['spanish-1000', 'french-1000'];
+      // sub-directories so direct URL visits work without server-side rewrites. the
+      // app rewrites the title once it boots, but a crawler and the loading tab only
+      // ever see what is in the file, so each route ships its own head
+      const shell = readFileSync(indexPath, 'utf8');
+      const routes = [
+        {
+          slug: 'french-1000',
+          title: 'French 1000',
+          description:
+            'A beginner-friendly list of 1,000 French words with English and Persian meanings, examples, and pronunciation.',
+        },
+        {
+          slug: 'spanish-1000',
+          title: 'Spanish 1000',
+          description:
+            'A beginner-friendly list of 1,000 Spanish words with English and Persian meanings, examples, and pronunciation.',
+        },
+      ];
       for (const route of routes) {
-        const routeDir = resolve(distDir, route);
+        const routeDir = resolve(distDir, route.slug);
         mkdirSync(routeDir, { recursive: true });
-        copyFileSync(indexPath, resolve(routeDir, 'index.html'));
+        const html = shell
+          .replace(/<title>[^<]*<\/title>/, `<title>${route.title}</title>`)
+          .replace(
+            /(<meta\s+name="description"\s+content=")[^"]*(")/,
+            `$1${route.description}$2`,
+          );
+        writeFileSync(resolve(routeDir, 'index.html'), html);
       }
     },
   };

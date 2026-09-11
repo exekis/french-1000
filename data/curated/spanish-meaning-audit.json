@@ -1,0 +1,894 @@
+{
+  "status": "passed",
+  "generatedAt": "2026-09-11T00:32:20.182Z",
+  "reviewed": false,
+  "languages": [
+    {
+      "code": "fr",
+      "covered": 1000,
+      "expected": 1000,
+      "correctionCount": 0,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 43,
+      "warned": [
+        {
+          "id": "0001",
+          "term": "que",
+          "value": "que",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0002",
+          "term": "de",
+          "value": "de",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0004",
+          "term": "a",
+          "value": "à",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0005",
+          "term": "la",
+          "value": "la",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0009",
+          "term": "en",
+          "value": "en",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0010",
+          "term": "lo",
+          "value": "lo",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0011",
+          "term": "un",
+          "value": "un",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0012",
+          "term": "por",
+          "value": "por",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0013",
+          "term": "qué",
+          "value": "qué",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0014",
+          "term": "me",
+          "value": "me",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0015",
+          "term": "una",
+          "value": "una",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0016",
+          "term": "te",
+          "value": "te",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0023",
+          "term": "si",
+          "value": "si",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0024",
+          "term": "bien",
+          "value": "bien",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0050",
+          "term": "tú",
+          "value": "tu",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0093",
+          "term": "favor",
+          "value": "favor",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0103",
+          "term": "va",
+          "value": "va",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0127",
+          "term": "oh",
+          "value": "oh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0133",
+          "term": "ni",
+          "value": "ni",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0149",
+          "term": "vas",
+          "value": "vas",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0188",
+          "term": "papá",
+          "value": "papa",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0197",
+          "term": "será",
+          "value": "sera",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0208",
+          "term": "mal",
+          "value": "mal",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0270",
+          "term": "entre",
+          "value": "entre",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0382",
+          "term": "fin",
+          "value": "fin",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0385",
+          "term": "venir",
+          "value": "venir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0416",
+          "term": "genial",
+          "value": "génial",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0556",
+          "term": "bebé",
+          "value": "bébé",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0560",
+          "term": "plan",
+          "value": "plan",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0563",
+          "term": "dormir",
+          "value": "dormir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0599",
+          "term": "general",
+          "value": "général",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0622",
+          "term": "café",
+          "value": "café",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0634",
+          "term": "libre",
+          "value": "libre",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0636",
+          "term": "york",
+          "value": "York",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0664",
+          "term": "avión",
+          "value": "avion",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0791",
+          "term": "normal",
+          "value": "normal",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0832",
+          "term": "sentir",
+          "value": "sentir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0842",
+          "term": "hotel",
+          "value": "hôtel",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0847",
+          "term": "pelo",
+          "value": "pelo",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0939",
+          "term": "existe",
+          "value": "existe",
+          "warnings": ["matches-the-french"]
+        }
+      ],
+      "disputedCount": 0,
+      "disputed": []
+    },
+    {
+      "code": "de",
+      "covered": 1000,
+      "expected": 1000,
+      "correctionCount": 0,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 15,
+      "warned": [
+        {
+          "id": "0127",
+          "term": "oh",
+          "value": "oh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0133",
+          "term": "ni",
+          "value": "ni",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0214",
+          "term": "mamá",
+          "value": "Mama",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0308",
+          "term": "auto",
+          "value": "Auto",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0322",
+          "term": "hey",
+          "value": "hey",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0416",
+          "term": "genial",
+          "value": "genial",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0560",
+          "term": "plan",
+          "value": "Plan",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0599",
+          "term": "general",
+          "value": "General",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0636",
+          "term": "york",
+          "value": "York",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0644",
+          "term": "real",
+          "value": "real",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0780",
+          "term": "foto",
+          "value": "Foto",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0791",
+          "term": "normal",
+          "value": "normal",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0805",
+          "term": "fotos",
+          "value": "Fotos",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0842",
+          "term": "hotel",
+          "value": "Hotel",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0974",
+          "term": "club",
+          "value": "Club",
+          "warnings": ["matches-the-french"]
+        }
+      ],
+      "disputedCount": 0,
+      "disputed": []
+    },
+    {
+      "code": "it",
+      "covered": 1000,
+      "expected": 1000,
+      "correctionCount": 0,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 99,
+      "warned": [
+        {
+          "id": "0005",
+          "term": "la",
+          "value": "la",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0015",
+          "term": "una",
+          "value": "una",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0019",
+          "term": "con",
+          "value": "con",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0029",
+          "term": "sí",
+          "value": "sì",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0033",
+          "term": "del",
+          "value": "del",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0034",
+          "term": "al",
+          "value": "al",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0050",
+          "term": "tú",
+          "value": "tu",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0053",
+          "term": "ha",
+          "value": "ha",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0061",
+          "term": "sólo",
+          "value": "solo",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0065",
+          "term": "o",
+          "value": "o",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0073",
+          "term": "era",
+          "value": "era",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0092",
+          "term": "casa",
+          "value": "casa",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0103",
+          "term": "va",
+          "value": "va",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0125",
+          "term": "uno",
+          "value": "uno",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0127",
+          "term": "oh",
+          "value": "oh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0144",
+          "term": "poco",
+          "value": "poco",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0145",
+          "term": "padre",
+          "value": "padre",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0147",
+          "term": "gente",
+          "value": "gente",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0175",
+          "term": "momento",
+          "value": "momento",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0178",
+          "term": "cosa",
+          "value": "cosa",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0179",
+          "term": "tipo",
+          "value": "tipo",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0190",
+          "term": "dice",
+          "value": "dice",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0191",
+          "term": "mío",
+          "value": "mio",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0210",
+          "term": "madre",
+          "value": "madre",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0222",
+          "term": "visto",
+          "value": "visto",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0224",
+          "term": "importa",
+          "value": "importa",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0232",
+          "term": "problema",
+          "value": "problema",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0243",
+          "term": "tanto",
+          "value": "tanto",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0246",
+          "term": "idea",
+          "value": "idea",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0274",
+          "term": "serio",
+          "value": "serio",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0300",
+          "term": "ok",
+          "value": "ok",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0305",
+          "term": "dentro",
+          "value": "dentro",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0308",
+          "term": "auto",
+          "value": "auto",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0339",
+          "term": "da",
+          "value": "dà",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0342",
+          "term": "mano",
+          "value": "mano",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0343",
+          "term": "guerra",
+          "value": "guerra",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0367",
+          "term": "único",
+          "value": "unico",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0372",
+          "term": "grande",
+          "value": "grande",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0380",
+          "term": "significa",
+          "value": "significa",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0387",
+          "term": "importante",
+          "value": "importante",
+          "warnings": ["matches-the-french"]
+        }
+      ],
+      "disputedCount": 0,
+      "disputed": []
+    },
+    {
+      "code": "pt",
+      "covered": 1000,
+      "expected": 1000,
+      "correctionCount": 0,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 247,
+      "warned": [
+        {
+          "id": "0002",
+          "term": "de",
+          "value": "de",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0018",
+          "term": "se",
+          "value": "se",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0020",
+          "term": "para",
+          "value": "para",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0032",
+          "term": "aquí",
+          "value": "aqui",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0035",
+          "term": "como",
+          "value": "como",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0040",
+          "term": "todo",
+          "value": "todo",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0041",
+          "term": "esta",
+          "value": "esta",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0042",
+          "term": "vamos",
+          "value": "vamos",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0046",
+          "term": "algo",
+          "value": "algo",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0049",
+          "term": "nos",
+          "value": "nós",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0051",
+          "term": "nada",
+          "value": "nada",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0054",
+          "term": "este",
+          "value": "este",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0059",
+          "term": "cómo",
+          "value": "como",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0069",
+          "term": "ser",
+          "value": "ser",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0072",
+          "term": "todos",
+          "value": "todos",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0073",
+          "term": "era",
+          "value": "era",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0075",
+          "term": "vez",
+          "value": "vez",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0083",
+          "term": "sabes",
+          "value": "sabes",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0086",
+          "term": "porque",
+          "value": "porque",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0089",
+          "term": "nunca",
+          "value": "nunca",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0092",
+          "term": "casa",
+          "value": "casa",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0093",
+          "term": "favor",
+          "value": "favor",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0114",
+          "term": "vida",
+          "value": "vida",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0115",
+          "term": "ver",
+          "value": "ver",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0122",
+          "term": "años",
+          "value": "anos",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0127",
+          "term": "oh",
+          "value": "oh",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0128",
+          "term": "ir",
+          "value": "ir",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0131",
+          "term": "antes",
+          "value": "antes",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0135",
+          "term": "día",
+          "value": "dia",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0136",
+          "term": "estar",
+          "value": "estar",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0142",
+          "term": "parece",
+          "value": "parece",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0160",
+          "term": "tal",
+          "value": "tal",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0163",
+          "term": "seguro",
+          "value": "seguro",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0164",
+          "term": "claro",
+          "value": "claro",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0165",
+          "term": "estas",
+          "value": "estas",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0166",
+          "term": "lugar",
+          "value": "lugar",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0167",
+          "term": "mundo",
+          "value": "mundo",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0168",
+          "term": "amigo",
+          "value": "amigo",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0173",
+          "term": "sabe",
+          "value": "sabe",
+          "warnings": ["matches-the-french"]
+        },
+        {
+          "id": "0175",
+          "term": "momento",
+          "value": "momento",
+          "warnings": ["matches-the-french"]
+        }
+      ],
+      "disputedCount": 0,
+      "disputed": []
+    },
+    {
+      "code": "ar",
+      "covered": 1000,
+      "expected": 1000,
+      "correctionCount": 4,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 0,
+      "warned": [],
+      "disputedCount": 0,
+      "disputed": []
+    },
+    {
+      "code": "zh",
+      "covered": 1000,
+      "expected": 1000,
+      "correctionCount": 0,
+      "rejectedCount": 0,
+      "rejected": [],
+      "warnedCount": 0,
+      "warned": [],
+      "disputedCount": 0,
+      "disputed": []
+    }
+  ],
+  "failures": []
+}

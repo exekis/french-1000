@@ -6,10 +6,11 @@
     "english": "that; which; who",
     "persian": "که؛ چه",
     "exampleSpanish": "Creo que tienes razón.",
+    "exampleEnglish": "I think you are right.",
     "exampleTarget": "que",
     "pronunciationTarget": "que",
     "audio": {
-      "path": "/audio/spanish/0001-que.mp3",
+      "path": "browser-speech:es-ES",
       "provider": "browser-speech",
       "kind": "neural",
       "licenseReference": "test-fixture"
@@ -28,10 +29,11 @@
     "english": "hello",
     "persian": "سلام",
     "exampleSpanish": "Hola, ¿cómo estás hoy?",
+    "exampleEnglish": "Hello, how are you today?",
     "exampleTarget": "Hola",
     "pronunciationTarget": "hola",
     "audio": {
-      "path": "/audio/spanish/0002-hola.mp3",
+      "path": "browser-speech:es-ES",
       "provider": "browser-speech",
       "kind": "neural",
       "licenseReference": "test-fixture"
@@ -50,10 +52,11 @@
     "english": "house; home",
     "persian": "خانه",
     "exampleSpanish": "Mi casa está cerca del parque.",
+    "exampleEnglish": "My house is near the park.",
     "exampleTarget": "casa",
     "pronunciationTarget": "casa",
     "audio": {
-      "path": "/audio/spanish/0003-casa.mp3",
+      "path": "browser-speech:es-ES",
       "provider": "browser-speech",
       "kind": "neural",
       "licenseReference": "test-fixture"

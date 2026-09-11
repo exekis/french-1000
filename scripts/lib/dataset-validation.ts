@@ -1,14 +1,17 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { Word } from '../../src/types';
+import { getWordExample, getWordTerm, type Word } from '../../src/types';
 import { containsExampleTarget } from './example-checks';
-import { wordSchema } from './schemas';
+import { spanishWordSchema, wordSchema } from './schemas';
 import { normalizeFrenchIdentity, zeroPadRank } from './text';
+
+export type DatasetCourse = 'french' | 'spanish';
 
 export type DatasetValidationOptions = {
   expectedCount?: number;
   audioRoot?: string;
   checkAudioFiles?: boolean;
+  course?: DatasetCourse;
 };
 
 export type DatasetValidationResult = {
@@ -21,6 +24,8 @@ export function validateWordDataset(
   options: DatasetValidationOptions = {},
 ): DatasetValidationResult {
   const expectedCount = options.expectedCount ?? 1000;
+  const course = options.course ?? 'french';
+  const schema = course === 'spanish' ? spanishWordSchema : wordSchema;
   const errors: string[] = [];
 
   if (!Array.isArray(input)) {
@@ -31,9 +36,9 @@ export function validateWordDataset(
     errors.push(`expected ${expectedCount} records, found ${input.length}`);
   }
 
-  const words: (Word & { french: string; exampleFrench: string })[] = [];
+  const words: Word[] = [];
   input.forEach((record, index) => {
-    const parsed = wordSchema.safeParse(record);
+    const parsed = schema.safeParse(record);
     if (!parsed.success) {
       const details = parsed.error.issues
         .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
@@ -46,7 +51,7 @@ export function validateWordDataset(
 
   const seenIds = new Set<string>();
   const seenRanks = new Set<number>();
-  const seenFrench = new Set<string>();
+  const seenTerms = new Set<string>();
 
   words.forEach((word, index) => {
     const expectedRank = index + 1;
@@ -65,18 +70,20 @@ export function validateWordDataset(
     seenIds.add(word.id);
     seenRanks.add(word.rank);
 
-    const frenchKey = normalizeFrenchIdentity(word.french);
-    if (seenFrench.has(frenchKey)) {
-      errors.push(`duplicate normalized French term ${word.french}`);
+    const term = getWordTerm(word);
+    const example = getWordExample(word);
+    const termKey = normalizeFrenchIdentity(term);
+    if (seenTerms.has(termKey)) {
+      errors.push(`duplicate normalized term ${term}`);
     }
-    seenFrench.add(frenchKey);
+    seenTerms.add(termKey);
 
-    if (!containsExampleTarget(word.exampleFrench, word.exampleTarget)) {
+    if (!containsExampleTarget(example, word.exampleTarget)) {
       errors.push(
         `rank ${word.rank} example does not contain ${word.exampleTarget}`,
       );
     }
-    if (!/[.!?…]$/u.test(word.exampleFrench.trim())) {
+    if (!/[.!?…]$/u.test(example.trim())) {
       errors.push(`rank ${word.rank} example has no sentence punctuation`);
     }
     if (word.review.example === 'pending') {

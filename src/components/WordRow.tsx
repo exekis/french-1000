@@ -39,6 +39,7 @@ function WordRowImpl({
   const reveal = () => study.reveal(word.id);
   const term = getWordTerm(word);
   const example = getWordExample(word);
+  const exampleEnglish = word.exampleEnglish;
   const langCode = targetLanguageCode ?? (word.spanish ? 'es' : 'fr');
 
   return (
@@ -97,6 +98,17 @@ function WordRowImpl({
           </span>
           <PronunciationButton word={word} kind="example" />
         </div>
+        {exampleEnglish && (
+          <p className="example-english" lang="en">
+            <MaskedMeaning
+              hidden={exampleHidden}
+              label={`English reading of the example for ${term}`}
+              onReveal={reveal}
+            >
+              {exampleEnglish}
+            </MaskedMeaning>
+          </p>
+        )}
       </td>
     </tr>
   );

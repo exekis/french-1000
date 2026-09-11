@@ -1141,6 +1141,21 @@ input[type='checkbox'] {
   flex: 1;
 }
 
+/* the english reading sits under the sentence and stays upright, so the eye can tell
+   at a glance which line is the language being learned and which one is the crib */
+.example-english {
+  margin: 4px 0 0;
+  padding-right: 38px;
+  color: var(--faint);
+  font-size: 0.92rem;
+  font-style: normal;
+  line-height: 1.4;
+}
+
+.word-card .example-english {
+  padding-right: 0;
+}
+
 /* the sentence speaker is quieter than the word one, so the word stays the main action */
 .pronunciation-button[data-kind='example'] {
   width: 28px;

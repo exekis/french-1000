@@ -3,9 +3,14 @@ import type { CollectionFilter } from '../lib/collections';
 type EmptyStateProps = {
   query: string;
   filter?: CollectionFilter;
+  targetLanguageName?: string;
 };
 
-export function EmptyState({ query, filter = 'all' }: EmptyStateProps) {
+export function EmptyState({
+  query,
+  filter = 'all',
+  targetLanguageName = 'French',
+}: EmptyStateProps) {
   // an empty saved list is a different problem from a search that found nothing, so
   // the reader is told which one they are looking at
   if (filter !== 'all' && !query) {
@@ -39,8 +44,9 @@ export function EmptyState({ query, filter = 'all' }: EmptyStateProps) {
       <p className="empty-kicker">No matches</p>
       <h2>Try a broader search</h2>
       <p>
-        Nothing in the list matches <strong>“{query}”</strong>. Try a French
-        word without accents, an English meaning, or Persian text.
+        Nothing in the list matches <strong>“{query}”</strong>. Try a{' '}
+        {targetLanguageName} word without accents, an English meaning, or
+        Persian text.
       </p>
     </output>
   );

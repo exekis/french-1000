@@ -6,6 +6,7 @@
     "english": "to be",
     "persian": "بودن",
     "exampleFrench": "Je veux être ici.",
+    "exampleEnglish": "I want to be here.",
     "exampleTarget": "être",
     "pronunciationTarget": "être",
     "audio": {
@@ -28,6 +29,7 @@
     "english": "hello",
     "persian": "سلام",
     "exampleFrench": "Bonjour, comment allez-vous ?",
+    "exampleEnglish": "Hello, how are you?",
     "exampleTarget": "Bonjour",
     "pronunciationTarget": "bonjour",
     "audio": {
@@ -50,6 +52,7 @@
     "english": "house; home",
     "persian": "خانه",
     "exampleFrench": "Ma maison est près du parc.",
+    "exampleEnglish": "My house is near the park.",
     "exampleTarget": "maison",
     "pronunciationTarget": "maison",
     "audio": {

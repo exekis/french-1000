@@ -73,3 +73,40 @@ export function findDuplicateExamples(
 
   return new Map([...idsByExample].filter(([, ids]) => ids.length > 1));
 }
+
+// an english reading of the example is a whole sentence, not a gloss, so it gets its
+// own bounds rather than reusing the meaning checks
+const nonLatinScript = /[\u0600-\u06FF\u0750-\u077F\u4E00-\u9FFF\u3400-\u4DBF]/;
+// the source-sentence placeholder list cannot be reused here, because "example" is
+// the ordinary english reading of exemple and ejemplo rather than a sign of a stub
+const translationPlaceholders = /\b(?:tbd|placeholder|lorem ipsum)\b/i;
+const MAX_TRANSLATION_LENGTH = 160;
+
+export function checkExampleTranslation(
+  translation: string,
+  sourceExample: string,
+): ExampleCheck {
+  const flags: string[] = [];
+  const value = translation.normalize('NFC').trim();
+  const wordCount = value.split(/[\s’'-]+/u).filter(Boolean).length;
+
+  if (!value) flags.push('empty');
+  if (value.length > MAX_TRANSLATION_LENGTH) flags.push('too-long');
+  if (/[\r\n\t]/.test(translation)) flags.push('contains-line-breaks');
+  if (value && !sentencePunctuation.test(value)) {
+    flags.push('missing-sentence-punctuation');
+  }
+  if (nonLatinScript.test(value)) flags.push('not-english-script');
+  if (translationPlaceholders.test(value)) flags.push('placeholder');
+  if (translation !== translation.normalize('NFC'))
+    flags.push('not-unicode-nfc');
+  // a model that hands the source sentence back has translated nothing
+  if (
+    value &&
+    normalizeSearchText(value) === normalizeSearchText(sourceExample)
+  ) {
+    flags.push('copies-the-source');
+  }
+
+  return { passed: flags.length === 0, flags, wordCount };
+}

@@ -40,6 +40,7 @@ export const exampleReviewOutputSchema = z.object({
 export const exampleApprovalSchema = z.object({
   id: z.string().regex(/^\d{4}$/),
   exampleFrench: z.string().min(1),
+  exampleEnglish: z.string().min(1).optional(),
   exampleTarget: z.string().min(1),
   status: z.enum(['auto-checked', 'human-reviewed']),
   approvedAt: z.string().min(1),
@@ -52,6 +53,7 @@ export const audioManifestEntrySchema = z
     path: z.union([
       z.string().regex(/^\/audio\/[A-Za-z0-9._-]+\.mp3$/),
       z.literal('browser-speech:fr-FR'),
+      z.literal('browser-speech:es-ES'),
     ]),
     provider: z.enum([
       'forvo',
@@ -122,12 +124,13 @@ export const audioManifestEntrySchema = z
     }
     if (
       entry.provider === 'browser-speech' &&
-      entry.path !== 'browser-speech:fr-FR'
+      entry.path !== 'browser-speech:fr-FR' &&
+      entry.path !== 'browser-speech:es-ES'
     ) {
       context.addIssue({
         code: 'custom',
         path: ['path'],
-        message: 'browser speech must use the fr-FR runtime path',
+        message: 'browser speech must use a runtime speech path',
       });
     }
     if (entry.provider === 'browser-speech' && entry.kind !== 'neural') {
@@ -153,6 +156,7 @@ export const wordSchema = z.object({
     path: z.union([
       z.string().regex(/^\/audio\/[A-Za-z0-9._-]+\.mp3$/),
       z.literal('browser-speech:fr-FR'),
+      z.literal('browser-speech:es-ES'),
     ]),
     provider: z.enum([
       'forvo',
@@ -187,3 +191,12 @@ export const wordSchema = z.object({
     flags: z.array(z.string()),
   }),
 });
+
+// the two courses only differ in which pair of headword fields they carry, so the
+// spanish schema reuses the french shape and swaps that pair
+export const spanishWordSchema = wordSchema
+  .omit({ french: true, exampleFrench: true })
+  .extend({
+    spanish: z.string().min(1),
+    exampleSpanish: z.string().min(1),
+  });

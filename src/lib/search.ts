@@ -31,6 +31,7 @@ export function createSearchKey(
     word.english,
     word.persian,
     getWordExample(word),
+    word.exampleEnglish ?? '',
   ];
   for (const code of languages) {
     const value = meanings[code]?.[word.id];

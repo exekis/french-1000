@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "generatedAt": "2026-09-11T00:54:08.156Z",
+  "course": "spanish",
+  "applied": 1000,
+  "corrected": 0,
+  "covered": 1000,
+  "expected": 1000,
+  "rejectedCount": 0,
+  "rejected": [],
+  "failures": []
+}

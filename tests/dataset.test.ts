@@ -2,7 +2,42 @@
 
 import { describe, expect, test } from 'vitest';
 import { validateWordDataset } from '../scripts/lib/dataset-validation';
-import { makeWord } from './fixtures';
+import { makeSpanishWord, makeWord } from './fixtures';
+
+describe('spanish dataset validation', () => {
+  test('accepts a spanish fixture on its own field names', () => {
+    const result = validateWordDataset(
+      [makeSpanishWord(1), makeSpanishWord(2)],
+      { expectedCount: 2, course: 'spanish', checkAudioFiles: false },
+    );
+    expect(result).toEqual({ valid: true, errors: [] });
+  });
+
+  test('still catches a duplicate term and a broken example', () => {
+    const result = validateWordDataset(
+      [
+        makeSpanishWord(1),
+        makeSpanishWord(2, {
+          spanish: 'palabra1',
+          exampleSpanish: 'Esto no la contiene',
+        }),
+      ],
+      { expectedCount: 2, course: 'spanish', checkAudioFiles: false },
+    );
+    expect(result.valid).toBe(false);
+    expect(result.errors.join('\n')).toMatch(/duplicate normalized term/);
+    expect(result.errors.join('\n')).toMatch(/no sentence punctuation/);
+  });
+
+  test('rejects a french record fed to the spanish course', () => {
+    const result = validateWordDataset([makeWord(1)], {
+      expectedCount: 1,
+      course: 'spanish',
+      checkAudioFiles: false,
+    });
+    expect(result.valid).toBe(false);
+  });
+});
 
 describe('dataset validation', () => {
   test('accepts a complete ordered fixture', () => {
@@ -21,9 +56,7 @@ describe('dataset validation', () => {
     expect(result.valid).toBe(false);
     expect(result.errors.join('\n')).toMatch(/rank 3, expected 2/);
     expect(result.errors.join('\n')).toMatch(/expected 0099|id 0099/);
-    expect(result.errors.join('\n')).toMatch(
-      /duplicate normalized French term/,
-    );
+    expect(result.errors.join('\n')).toMatch(/duplicate normalized term/);
   });
 
   test('rejects pending reviews and provider-kind mismatches', () => {

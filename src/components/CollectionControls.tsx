@@ -14,6 +14,7 @@ type CollectionControlsProps = {
   onFilterChange(filter: CollectionFilter): void;
   onImport(collections: Collections): void;
   onDeleteList(listId: string): void;
+  courseSlug?: string;
 };
 
 export function CollectionControls({
@@ -22,6 +23,7 @@ export function CollectionControls({
   onFilterChange,
   onImport,
   onDeleteList,
+  courseSlug = 'french-1000',
 }: CollectionControlsProps) {
   const fileInput = useRef<HTMLInputElement | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -40,7 +42,7 @@ export function CollectionControls({
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'french-1000-lists.json';
+    anchor.download = `${courseSlug}-lists.json`;
     anchor.click();
     URL.revokeObjectURL(url);
     setNotice(`Exported ${countSaved(collections)} saved words.`);

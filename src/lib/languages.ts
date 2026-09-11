@@ -33,6 +33,13 @@ export const languages: LanguageDefinition[] = [
     bundled: true,
   },
   {
+    code: 'fr',
+    label: 'French',
+    endonym: 'Français',
+    direction: 'ltr',
+    bundled: false,
+  },
+  {
     code: 'es',
     label: 'Spanish',
     endonym: 'Español',

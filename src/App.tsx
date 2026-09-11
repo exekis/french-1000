@@ -224,7 +224,11 @@ export default function App({ initialWords, initialCourseId }: AppProps) {
 
       <main>
         <section className="tool-panel" aria-label="Vocabulary controls">
-          <SearchBar query={query} onQueryChange={setQuery} />
+          <SearchBar
+            query={query}
+            onQueryChange={setQuery}
+            targetLanguageName={activeCourse.name}
+          />
           {words.length > 0 && (
             <div className="rank-navigation">
               <label htmlFor="rank-input">Go to rank</label>
@@ -286,6 +290,7 @@ export default function App({ initialWords, initialCourseId }: AppProps) {
               onDeleteList={(listId) =>
                 setCollections((current) => deleteList(current, listId))
               }
+              courseSlug={activeCourse.slug}
             />
           </section>
         )}
@@ -320,7 +325,11 @@ export default function App({ initialWords, initialCourseId }: AppProps) {
                 />
               </StudyProvider>
             ) : (
-              <EmptyState query={query} filter={filter} />
+              <EmptyState
+                query={query}
+                filter={filter}
+                targetLanguageName={activeCourse.name}
+              />
             )}
           </section>
         )}

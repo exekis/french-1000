@@ -9,7 +9,7 @@ import {
   languages,
   orderLanguages,
 } from '../src/lib/languages';
-import { checkMeaning } from '../scripts/lib/meaning-checks';
+import { checkMeaning, normalizeMeaning } from '../scripts/lib/meaning-checks';
 import { createSearchKey, filterWords } from '../src/lib/search';
 import { makeWord } from './fixtures';
 
@@ -75,6 +75,38 @@ describe('searching across languages', () => {
   test('folds accents in an added language', () => {
     const key = createSearchKey(word, ['es'], { es: { '0001': 'habitación' } });
     expect(key).toContain('habitacion');
+  });
+});
+
+describe('meaning normalisation', () => {
+  test('drops a sense the model repeated', () => {
+    expect(normalizeMeaning('o; o')).toBe('o');
+    expect(normalizeMeaning('che; che')).toBe('che');
+    expect(normalizeMeaning('من؛ من')).toBe('من');
+  });
+
+  test('keeps two genuinely different senses', () => {
+    expect(normalizeMeaning('von; aus')).toBe('von; aus');
+    expect(normalizeMeaning('لا؛ ليس')).toBe('لا؛ ليس');
+  });
+
+  test('caps a run-on answer at two senses', () => {
+    expect(normalizeMeaning('para; por; através de')).toBe('para; por');
+    expect(normalizeMeaning('em; em; em')).toBe('em');
+  });
+
+  test('keeps each script punctuated the way it arrived', () => {
+    expect(normalizeMeaning('那；哪个')).toBe('那；哪个');
+    expect(normalizeMeaning('那；那')).toBe('那');
+  });
+
+  test('ignores case and accents when deciding a sense repeats', () => {
+    expect(normalizeMeaning('Été; été')).toBe('Été');
+  });
+
+  test('tidies spacing and empty senses', () => {
+    expect(normalizeMeaning('  casa ;  ; hogar ')).toBe('casa; hogar');
+    expect(normalizeMeaning('   ')).toBe('');
   });
 });
 

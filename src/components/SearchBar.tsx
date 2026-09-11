@@ -1,9 +1,14 @@
 type SearchBarProps = {
   query: string;
   onQueryChange(query: string): void;
+  targetLanguageName?: string;
 };
 
-export function SearchBar({ query, onQueryChange }: SearchBarProps) {
+export function SearchBar({
+  query,
+  onQueryChange,
+  targetLanguageName = 'French',
+}: SearchBarProps) {
   return (
     <div className="search-field">
       <label htmlFor="word-search">Search the list</label>
@@ -17,7 +22,7 @@ export function SearchBar({ query, onQueryChange }: SearchBarProps) {
           type="search"
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
-          placeholder="French, English, Persian, or example"
+          placeholder={`${targetLanguageName}, English, Persian, or example`}
           autoComplete="off"
           spellCheck="false"
         />

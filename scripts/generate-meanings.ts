@@ -6,27 +6,24 @@ import {
   languageByCode,
 } from '../src/lib/languages';
 import { getNumberOption, getOption } from './lib/cli';
-import { checkMeaning } from './lib/meaning-checks';
-import { appendJsonLine, nowIso, readJson, readJsonLines } from './lib/io';
-import { fromRoot } from './lib/paths';
-import { requirePassedImportAudit } from './lib/pipeline-gates';
-import type { ImportedWord } from './lib/pipeline-types';
+import {
+  type CourseWord,
+  readCourseWords,
+  resolveMeaningsDataset,
+} from './lib/course-datasets';
+import { checkMeaning, normalizeMeaning } from './lib/meaning-checks';
+import { appendJsonLine, nowIso, readJsonLines } from './lib/io';
 import { withRetry } from './lib/retry';
-import { importedWordSchema } from './lib/schemas';
 import {
   createModelClient,
   requestStructuredOutput,
 } from './lib/structured-output';
 
 const promptVersion = 'meanings-v1';
-const inputPath = getOption(
-  'input',
-  fromRoot('data/curated/imported-words.json'),
-)!;
-const outputPath = getOption(
-  'output',
-  fromRoot('data/curated/meaning-candidates.jsonl'),
-)!;
+const dataset = resolveMeaningsDataset(getOption('course'));
+const languageCodeForCourse = dataset.courseId === 'spanish' ? 'es' : 'fr';
+const inputPath = getOption('input', dataset.wordsPath)!;
+const outputPath = getOption('output', dataset.candidatesPath)!;
 const batchSize = getNumberOption('batch-size', 12);
 const concurrency = getNumberOption('concurrency', 4);
 const startRank = getNumberOption('start-rank', 1);
@@ -34,7 +31,7 @@ const limit = getNumberOption('limit', Number.POSITIVE_INFINITY);
 const model = getOption('model', process.env.OPENAI_MEANING_MODEL);
 const baseURL = getOption('base-url', process.env.OPENAI_BASE_URL);
 
-const requested = (getOption('languages') ?? 'es,de,it,pt,ar,zh')
+const requested = (getOption('languages') ?? dataset.defaultLanguages)
   .split(',')
   .map((code) => code.trim())
   .filter(Boolean);
@@ -45,6 +42,9 @@ for (const code of requested) {
       `${code} is a bundled baseline meaning, not generated here`,
     );
   }
+  if (languageCodeForCourse === code) {
+    throw new Error(`${code} is the language this course teaches`);
+  }
 }
 const codes = requested as LanguageCode[];
 
@@ -53,23 +53,12 @@ if (!Number.isInteger(concurrency) || concurrency < 1) {
   throw new Error('--concurrency must be a positive integer');
 }
 
-const source = await readJson<unknown[]>(inputPath);
-const words = source.map((record, index) => {
-  const parsed = importedWordSchema.safeParse(record);
-  if (!parsed.success) {
-    throw new Error(`Invalid imported word ${index}: ${parsed.error.message}`);
-  }
-  return parsed.data as ImportedWord;
-});
-await requirePassedImportAudit(
-  fromRoot('data/curated/import-audit.json'),
-  words.length,
-);
+const words = await readCourseWords({ ...dataset, wordsPath: inputPath });
 
 type MeaningCandidate = {
   id: string;
   rank: number;
-  french: string;
+  term: string;
   meanings: Record<string, string>;
   flags: Record<string, string[]>;
   warnings: Record<string, string[]>;
@@ -98,7 +87,7 @@ const pending = words
   .filter((word) => word.rank >= startRank && !completed.has(word.id))
   .slice(0, limit);
 
-const batches: ImportedWord[][] = [];
+const batches: CourseWord[][] = [];
 for (let index = 0; index < pending.length; index += batchSize) {
   batches.push(pending.slice(index, index + batchSize));
 }
@@ -114,7 +103,7 @@ const languageLines = codes
   })
   .join('\n');
 
-const systemPrompt = `You translate single French vocabulary entries for absolute beginners.
+const systemPrompt = `You translate single ${dataset.languageName} vocabulary entries for absolute beginners.
 
 For every input record return exactly one entry with the same id, and one field per requested language:
 ${languageLines}
@@ -123,10 +112,12 @@ Rules:
 - Translate the meaning the English and Persian glosses describe, not another sense of the same spelling.
 - Give the dictionary meaning of the word itself, not a sentence and not a definition.
 - Keep it short. One term is best. Use a semicolon to separate at most two close senses.
-- Match the part of speech of the French word. Give verbs as infinitives.
+- Match the part of speech of the ${dataset.languageName} word. Give verbs as infinitives.
 - For a grammatical function word with no standalone translation, give the closest equivalent word in that language rather than an explanation.
-- Write each language in its own native script. Never answer in French or English unless that is the requested language.
-- Do not copy the French word back. Do not add commentary, romanisation, articles in brackets, or notes.`;
+- Write each language in its own native script. Never answer in ${dataset.languageName} or English unless that is the requested language.
+- Do not copy the ${dataset.languageName} word back. Do not add commentary, romanisation, articles in brackets, or notes.
+- Return exactly one entry per input record, in the same order. Six records means six entries.
+- Never repeat the same term twice inside one field.`;
 
 const client = createModelClient(baseURL);
 let written = 0;
@@ -140,13 +131,13 @@ for (let index = 0; index < batches.length; index += concurrency) {
           requestStructuredOutput({
             client,
             model,
-            name: 'french_meaning_batch',
+            name: `${dataset.courseId}_meaning_batch`,
             schema: outputSchema,
             systemPrompt,
             userPrompt: `Requested languages: ${codes.join(', ')}\n\nInput records:\n${JSON.stringify(
               batch.map((word) => ({
                 id: word.id,
-                french: word.french,
+                term: word.term,
                 english: word.english,
                 persian: word.persian,
               })),
@@ -172,18 +163,16 @@ for (let index = 0; index < batches.length; index += concurrency) {
         const flags: Record<string, string[]> = {};
         const warnings: Record<string, string[]> = {};
         for (const code of codes) {
-          const value = String(entry[code] ?? '')
-            .normalize('NFC')
-            .trim();
+          const value = normalizeMeaning(String(entry[code] ?? ''));
           meanings[code] = value;
-          const check = checkMeaning(value, word.french, code);
+          const check = checkMeaning(value, word.term, code);
           if (check.flags.length > 0) flags[code] = check.flags;
           if (check.warnings.length > 0) warnings[code] = check.warnings;
         }
         return {
           id: word.id,
           rank: word.rank,
-          french: word.french,
+          term: word.term,
           meanings,
           flags,
           warnings,

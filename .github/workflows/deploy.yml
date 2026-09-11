@@ -31,6 +31,7 @@ jobs:
       # the audio and artwork manifests are gates on the published dataset, so a broken
       # one should stop the deploy rather than ship a site with missing media
       - run: npm run validate:data
+      - run: npm run validate:data:es
       - run: npm run build
         env:
           VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}/

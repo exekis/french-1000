@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run typecheck && vite build",
-    "build:release": "npm run validate:data && npm run validate:audio && npm run build",
+    "build:release": "npm run validate:data && npm run validate:data:es && npm run validate:audio && npm run build",
     "preview": "vite preview",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -24,9 +24,15 @@
     "examples:overrides": "tsx scripts/apply-example-overrides.ts",
     "examples:prune": "tsx scripts/prune-invalid-examples.ts",
     "examples:review": "tsx scripts/review-examples.ts",
+    "examples:translate": "tsx scripts/translate-examples.ts",
+    "examples:translate:publish": "tsx scripts/publish-example-translations.ts",
+    "examples:translate:es": "tsx scripts/translate-examples.ts --course spanish",
+    "examples:translate:publish:es": "tsx scripts/publish-example-translations.ts --course spanish",
     "meanings:generate": "tsx scripts/generate-meanings.ts",
     "meanings:review": "tsx scripts/review-meanings.ts",
     "meanings:publish": "tsx scripts/publish-meanings.ts",
+    "meanings:generate:es": "tsx scripts/generate-meanings.ts --course spanish",
+    "meanings:publish:es": "tsx scripts/publish-meanings.ts --course spanish",
     "audio:human": "tsx scripts/fetch-human-audio.ts",
     "audio:commons": "tsx scripts/fetch-wikimedia-audio.ts",
     "audio:browser": "tsx scripts/prepare-browser-speech.ts",
@@ -37,7 +43,8 @@
     "art:stickers": "tsx scripts/fetch-sticker-art.ts",
     "validate:audio": "tsx scripts/validate-audio.ts",
     "publish:data": "tsx scripts/publish-dataset.ts",
-    "validate:data": "tsx scripts/validate-dataset.ts"
+    "validate:data": "tsx scripts/validate-dataset.ts",
+    "validate:data:es": "tsx scripts/validate-dataset.ts --course spanish"
   },
   "dependencies": {
     "@google-cloud/text-to-speech": "^7.0.0",

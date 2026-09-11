@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T10:00:00.000Z",
-  "totalRecordings": 1000,
+  "generatedAt": "2026-09-09T00:00:00.000Z",
+  "totalRecordings": 0,
   "providers": [
     {
       "provider": "browser-speech",
@@ -9,18 +9,12 @@
     }
   ],
   "speakers": [],
-  "licenses": [
-    {
-      "name": "Web Speech API",
-      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API",
-      "recordings": 1000
-    }
-  ],
+  "licenses": [],
   "synthesizedVoices": [
     {
-      "voiceName": "es-ES Neural Speech",
+      "voiceName": "Web Speech es-ES",
       "recordings": 1000,
-      "licenseReference": "Web Speech API (https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)"
+      "licenseReference": "Spoken by the reader's own browser (https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)"
     }
   ]
 }

@@ -7,7 +7,64 @@ import {
   resolveCourseFromLocation,
   buildCourseHref,
 } from '../src/lib/courses';
+import { orderLanguages } from '../src/lib/languages';
+import App from '../src/App';
 import { CourseSwitcher } from '../src/components/CourseSwitcher';
+import { makeSpanishWord } from './fixtures';
+
+describe('course meaning columns', () => {
+  test('a course never offers the language it teaches', () => {
+    const spanishCodes = courses.spanish.translationLanguages.map(
+      (language) => language.code,
+    );
+    const frenchCodes = courses.french.translationLanguages.map(
+      (language) => language.code,
+    );
+    expect(spanishCodes).not.toContain('es');
+    expect(spanishCodes).toContain('fr');
+    expect(frenchCodes).not.toContain('fr');
+    expect(frenchCodes).toContain('es');
+  });
+
+  test('French survives a round trip through the registry order', () => {
+    // it used to be offered by the spanish course but missing from the registry, so a
+    // reader who picked it lost the column again on the next load
+    expect(orderLanguages(['en', 'fa', 'fr'])).toEqual(['en', 'fa', 'fr']);
+  });
+});
+
+describe('spanish course rendering', () => {
+  const words = [makeSpanishWord(1), makeSpanishWord(2)];
+
+  test('names the course in the search box and the empty state', async () => {
+    const user = userEvent.setup();
+    render(<App initialWords={words} initialCourseId="spanish" />);
+
+    expect(
+      screen.getByPlaceholderText('Spanish, English, Persian, or example'),
+    ).toBeInTheDocument();
+
+    const search = screen.getByRole('searchbox', { name: /Search the list/ });
+    await user.type(search, 'not-in-the-list');
+    expect(screen.getByRole('status')).toHaveTextContent('Spanish word');
+  });
+
+  test('labels the controls with the Spanish headword, not undefined', () => {
+    render(<App initialWords={words} initialCourseId="spanish" />);
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Play pronunciation of palabra1',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Star palabra1' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Add palabra1 to a list' }),
+    ).toBeInTheDocument();
+  });
+});
 
 describe('courses and routing', () => {
   test('resolves course from pathname correctly', () => {

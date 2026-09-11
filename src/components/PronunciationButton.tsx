@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { audioController, type PlaybackKind } from '../lib/audio';
-import type { Word } from '../types';
+import { getWordTerm, type Word } from '../types';
 
 type PronunciationButtonProps = {
   word: Word;
@@ -21,8 +21,8 @@ export function PronunciationButton({
   const isLoading = isCurrent && state.status === 'loading';
   const error = isCurrent && state.status === 'error' ? state.error : null;
   const action = isPlaying || isLoading ? 'Pause' : 'Play';
-  const target =
-    kind === 'example' ? `example for ${word.french}` : word.french;
+  const term = getWordTerm(word);
+  const target = kind === 'example' ? `example for ${term}` : term;
 
   return (
     <div className="pronunciation-control">

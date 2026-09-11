@@ -16,6 +16,7 @@ export type Word = {
   persian: string;
   exampleFrench?: string;
   exampleSpanish?: string;
+  exampleEnglish?: string;
   exampleTarget: string;
   pronunciationTarget: string;
   pronunciationIpa?: string;

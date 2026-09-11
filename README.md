@@ -4,6 +4,29 @@ A static, mobile-friendly French vocabulary site for absolute beginners. It pres
 
 The implementation contract and release gates are in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
+## Courses
+
+The site serves two lists from one build. `/french-1000/` is the original, and
+`/spanish-1000/` is the same interface over a ranked list of 1,000 Spanish words with
+the same English and Persian baseline, examples, and study tools. The switcher at the
+top of the page moves between them, and each course keeps its own practice settings,
+saved lists, and chosen meaning columns in `localStorage`, so progress in one never
+overwrites the other.
+
+Routing reads the path first, then the hash and the query, so `/spanish-1000`,
+`#/spanish-1000`, and `?lang=es` all resolve to the same course and a deep link
+survives a static host with no rewrite rules. The build writes a directory per route
+with its own title and description.
+
+A course never offers the language it teaches as a meaning column: the French list
+offers Spanish, the Spanish list offers French, and both offer the rest.
+
+The two lists differ in one respect, pronunciation. French is recorded; Spanish is not.
+The Spanish Lingua Libre corpus covers roughly half the list against near-complete
+coverage for French, so rather than ship a mix of real voices and synthetic ones the
+Spanish course reads every word and example with the visitor's own `es-ES` speech
+engine, and its credits panel says so.
+
 ## Status
 
 The complete 1,000-row dataset is published in `src/data/words.json`. It was imported from `french_top_1000_english_persian.xlsx`, checked for rank, identity, blank cells, and presentation-safe normalisation, then enriched through a resumable example-generation pipeline.
@@ -69,6 +92,35 @@ record only attaches a clip when it still matches the sentence on the page.
 npm run audio:examples -- --voice-dir <dir> --license "<terms>"
 ```
 
+## Example translations
+
+Every example sentence carries an English reading underneath it, so a beginner can see
+what the sentence actually says instead of decoding it a word at a time. The reading
+sits on the word record next to the sentence it reads, like the English and Persian
+meanings, so it is there on first paint with nothing to fetch.
+
+`npm run examples:translate` asks a model for a batch of sentences at a time and checks
+each answer before it can be published: non-empty, one sentence, ends with sentence
+punctuation, written in Latin script, short enough to be a translation rather than a
+commentary, and not the source sentence handed straight back.
+
+`npm run examples:translate:publish` merges the readings into the published word list
+and records coverage in an audit file. A reading belongs to one sentence, so rebuilding
+the list with `npm run publish:data` carries a reading over only while its example is
+unchanged, and drops it when the sentence has been rewritten.
+
+Practice mode covers the reading along with the sentence, since a translation left
+visible under a covered example would hand over the answer. Search covers it too, so a
+word can be found by the English sentence as well as the target one.
+
+```sh
+npm run examples:translate -- --model <model> --base-url http://127.0.0.1:1234/v1
+npm run examples:translate:publish
+
+npm run examples:translate:es -- --model <model> --base-url http://127.0.0.1:1234/v1
+npm run examples:translate:publish:es
+```
+
 ## Translations
 
 `npm run meanings:generate` asks a model for all requested languages at once per batch
@@ -83,14 +135,25 @@ in the wrong language. A correction is only accepted when it passes the same
 deterministic checks a fresh candidate has to pass, so review cannot introduce a worse
 value than it replaced.
 
+A repeated sense is dropped before publication. A model with no clean equivalent for a
+function word tends to answer `o; o` or `من؛ من` as though it were two readings, so the
+list is split, folded for case and accents, deduplicated, and capped at two senses,
+keeping whichever separator the script arrived with.
+
 `npm run meanings:publish` writes one file per language into `src/data/meanings/` and
 records coverage and review status in `data/curated/meaning-audit.json`. A language that
 has not been through review is labelled `generated` rather than `auto-checked`.
+
+Both scripts take `--course`, which selects the word list, the candidate and review
+files, and the output directory. The Spanish course has its own entry points:
 
 ```sh
 npm run meanings:generate -- --model <model> --base-url http://127.0.0.1:1234/v1
 npm run meanings:review -- --model <model> --base-url http://127.0.0.1:1234/v1
 npm run meanings:publish
+
+npm run meanings:generate:es -- --model <model> --base-url http://127.0.0.1:1234/v1
+npm run meanings:publish:es
 ```
 
 ## Collage artwork
@@ -191,7 +254,7 @@ The same endpoint flags work for `examples:review`. Without `--base-url`, the sc
 
 Live at **https://exekis.github.io/french-1000/**.
 
-Every push to `main` runs `.github/workflows/deploy.yml`, which validates the dataset, builds, and publishes to GitHub Pages. The dataset check runs before the build so a broken manifest stops the deploy rather than shipping a site with missing media.
+Every push to `main` runs `.github/workflows/deploy.yml`, which validates both word lists, builds, and publishes to GitHub Pages. The dataset checks run before the build so a broken manifest stops the deploy rather than shipping a site with missing media. `npm run validate:data` covers the French list and `npm run validate:data:es` the Spanish one.
 
 Vite is configured for a `/french-1000/` static deployment, which matches the repository name and so needs no override on Pages. To build the production artifact locally:
 

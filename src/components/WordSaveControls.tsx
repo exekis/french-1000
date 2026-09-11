@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import type { Collections } from '../lib/collections';
-import type { Word } from '../types';
+import { getWordTerm, type Word } from '../types';
 
 type WordSaveControlsProps = {
   word: Word;
@@ -22,6 +22,7 @@ export function WordSaveControls({
   const wrap = useRef<HTMLDivElement | null>(null);
   const menuId = useId();
 
+  const term = getWordTerm(word);
   const isStarred = collections.starred.includes(word.id);
   const listCount = collections.lists.filter((list) =>
     list.wordIds.includes(word.id),
@@ -58,7 +59,7 @@ export function WordSaveControls({
         type="button"
         className="star-button"
         aria-pressed={isStarred}
-        aria-label={`${isStarred ? 'Unstar' : 'Star'} ${word.french}`}
+        aria-label={`${isStarred ? 'Unstar' : 'Star'} ${term}`}
         onClick={() => onToggleStar(word.id)}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -74,7 +75,7 @@ export function WordSaveControls({
         className="list-button"
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
-        aria-label={`Add ${word.french} to a list`}
+        aria-label={`Add ${term} to a list`}
         data-in-list={listCount > 0 ? 'true' : undefined}
         onClick={() => setOpen((current) => !current)}
       >
