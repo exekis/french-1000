@@ -19,7 +19,7 @@ afterEach(async () => {
 });
 
 async function makeWorkbook(rows: string[][]) {
-  const directory = await mkdtemp(join(tmpdir(), 'french-1000-import-'));
+  const directory = await mkdtemp(join(tmpdir(), 'lang-1000-import-'));
   temporaryDirectories.push(directory);
   const workbook = new ExcelJS.Workbook();
   const words = workbook.addWorksheet('Top 1000');

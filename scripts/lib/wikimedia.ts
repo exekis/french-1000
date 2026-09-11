@@ -5,7 +5,7 @@ const COMMONS_API = 'https://commons.wikimedia.org/w/api.php';
 
 // wikimedia asks every automated client to identify itself with a contactable agent
 export const USER_AGENT =
-  'french-1000-audio/1.0 (https://github.com/exekis/french-1000; kiarashsotoudeh@gmail.com)';
+  'lang-1000-audio/1.0 (https://github.com/exekis/lang-1000; kiarashsotoudeh@gmail.com)';
 
 // lingua libre tags french recordings with the wikidata id for the french language
 const LINGUA_LIBRE_FRENCH = 'LL-Q150 (fra)';

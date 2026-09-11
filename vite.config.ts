@@ -57,7 +57,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_');
 
   return {
-    base: env.VITE_BASE_PATH || '/french-1000/',
+    base: env.VITE_BASE_PATH || '/lang-1000/',
     plugins: [react(), spaRoutesPlugin()],
     build: { chunkSizeWarningLimit: 2000 },
   };

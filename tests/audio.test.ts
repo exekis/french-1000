@@ -47,9 +47,9 @@ describe('audio controller', () => {
     expect(
       resolveAudioPath(
         '/audio/0001-etre.mp3',
-        'https://example.com/french-1000/',
+        'https://example.com/lang-1000/',
       ),
-    ).toBe('https://example.com/french-1000/audio/0001-etre.mp3');
+    ).toBe('https://example.com/lang-1000/audio/0001-etre.mp3');
   });
 
   test('reuses one audio element and stops it before a new word', async () => {

@@ -6,8 +6,9 @@ The implementation contract and release gates are in [IMPLEMENTATION_PLAN.md](IM
 
 ## Courses
 
-The site serves two lists from one build. `/french-1000/` is the original, and
-`/spanish-1000/` is the same interface over a ranked list of 1,000 Spanish words with
+The site serves two lists from one build, under the repository base path. `french-1000`
+is the original, and `spanish-1000` is the same interface over a ranked list of 1,000
+Spanish words with
 the same English and Persian baseline, examples, and study tools. The switcher at the
 top of the page moves between them, and each course keeps its own practice settings,
 saved lists, and chosen meaning columns in `localStorage`, so progress in one never
@@ -194,7 +195,8 @@ npm ci
 npm run dev
 ```
 
-The default Vite base path is `/french-1000/`. Override it locally when needed:
+The default Vite base path is `/lang-1000/`, which matches the repository name. Override
+it locally when needed:
 
 ```sh
 VITE_BASE_PATH=/ npm run dev
@@ -252,11 +254,12 @@ The same endpoint flags work for `examples:review`. Without `--base-url`, the sc
 
 ## Deployment
 
-Live at **https://exekis.github.io/french-1000/**.
+Live at **https://exekis.github.io/lang-1000/**, with the two courses at
+`/lang-1000/french-1000/` and `/lang-1000/spanish-1000/`.
 
 Every push to `main` runs `.github/workflows/deploy.yml`, which validates both word lists, builds, and publishes to GitHub Pages. The dataset checks run before the build so a broken manifest stops the deploy rather than shipping a site with missing media. `npm run validate:data` covers the French list and `npm run validate:data:es` the Spanish one.
 
-Vite is configured for a `/french-1000/` static deployment, which matches the repository name and so needs no override on Pages. To build the production artifact locally:
+The workflow feeds `VITE_BASE_PATH` from the Pages base path, so a repository rename is picked up without editing anything. The checked-in default only matters for a local build. To build the production artifact locally:
 
 ```sh
 npm run build:release

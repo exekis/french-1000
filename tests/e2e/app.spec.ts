@@ -80,7 +80,7 @@ test('reuses one player and exposes play and pause state', async ({ page }) => {
     return { count: instances.length, ...instances[0] };
   });
   expect(audioState.count).toBe(1);
-  expect(audioState.src).toContain('/french-1000/audio/0002-bonjour.mp3');
+  expect(audioState.src).toContain('/lang-1000/audio/0002-bonjour.mp3');
   expect(audioState.pauseCount).toBeGreaterThanOrEqual(2);
 });
 
